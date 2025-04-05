@@ -41,12 +41,22 @@ class DatabaseHelper {
   }
 
   Future<List<McpDict>> search(String query) async {
+    // 检查输入是否为空
+    if (query.isEmpty) {
+      return [];
+    }
+
     // 将输入的多个汉字转换为 Unicode
     final searchQueries =
         query.codeUnits
             .where((unit) => unit >= 0x4E00 && unit <= 0x9FFF)
             .map((unit) => unit.toRadixString(16).toUpperCase())
             .toList();
+
+    // 如果没有有效的汉字，直接返回空列表
+    if (searchQueries.isEmpty) {
+      return [];
+    }
 
     // 构建 SQL 查询条件
     final whereClauses = searchQueries
