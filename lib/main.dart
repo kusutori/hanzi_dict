@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'database_helper.dart';
 import 'models/hanzi_card.dart';
 import 'models/mcp_dict.dart';
-import 'settings_page.dart';
 
 void main() {
   runApp(const MyApp());
