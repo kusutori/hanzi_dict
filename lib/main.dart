@@ -50,10 +50,14 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Hanzi Dictionary',
       theme: ThemeData(
+        fontFamily: 'LXGWWenKai',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData(
+        fontFamily: 'LXGWWenKai',
+        brightness: Brightness.dark,
+      ),
       themeMode: _themeMode,
       home: const SearchPage(),
       routes: {

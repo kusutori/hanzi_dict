@@ -41,23 +41,23 @@ class DatabaseHelper {
   }
 
   Future<List<McpDict>> search(String query) async {
-    String searchQuery;
+    // 将输入的多个汉字转换为 Unicode
+    final searchQueries =
+        query.codeUnits
+            .where((unit) => unit >= 0x4E00 && unit <= 0x9FFF)
+            .map((unit) => unit.toRadixString(16).toUpperCase())
+            .toList();
 
-    // 检查输入是否为汉字
-    if (query.codeUnits.every((unit) => unit >= 0x4E00 && unit <= 0x9FFF)) {
-      // 将汉字转换为 Unicode
-      searchQuery =
-          query.codeUnits
-              .map((unit) => unit.toRadixString(16).toUpperCase())
-              .join();
-    } else {
-      searchQuery = query;
-    }
+    // 构建 SQL 查询条件
+    final whereClauses = searchQueries
+        .map((_) => 'unicode LIKE ?')
+        .join(' OR ');
+    final whereArgs = searchQueries.map((q) => '%$q%').toList();
 
     final List<Map<String, dynamic>> maps = await _database.query(
       'mcpdict',
-      where: 'unicode LIKE ? OR mc LIKE ? OR pu LIKE ?',
-      whereArgs: ['%$searchQuery%', '%$searchQuery%', '%$searchQuery%'],
+      where: whereClauses,
+      whereArgs: whereArgs,
     );
 
     return maps.map((map) => McpDict.fromJson(map)).toList();
