@@ -60,7 +60,15 @@ class DatabaseHelper {
       whereArgs: whereArgs,
     );
 
-    return maps.map((map) => McpDict.fromJson(map)).toList();
+    // 按输入顺序排序结果
+    final results = maps.map((map) => McpDict.fromJson(map)).toList();
+    results.sort((a, b) {
+      final indexA = searchQueries.indexOf(a.unicode?.toUpperCase() ?? '');
+      final indexB = searchQueries.indexOf(b.unicode?.toUpperCase() ?? '');
+      return indexA.compareTo(indexB);
+    });
+
+    return results;
   }
 
   Future<void> closeDatabase() async {
