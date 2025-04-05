@@ -67,6 +67,18 @@ flutter:
       - assets/fonts/LXGWWenKai-Medium.ttf
       - assets/fonts/LXGWWenKai-Light.ttf 
       - assets/fonts/LXGWWenKai-Regular.ttf 
+      - assets/drawable/lang_ct.png
+      - assets/drawable/lang_jp_go.png
+      - assets/drawable/lang_jp_kan.png
+      - assets/drawable/lang_jp_kwan.png
+      - assets/drawable/lang_jp_other.png
+      - assets/drawable/lang_jp_tou.png
+      - assets/drawable/lang_kr.png
+      - assets/drawable/lang_mc.png
+      - assets/drawable/lang_mn.png
+      - assets/drawable/lang_pu.png
+      - assets/drawable/lang_sh.png
+      - assets/drawable/lang_vn.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
