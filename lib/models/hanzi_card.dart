@@ -155,21 +155,32 @@ class HanziCard extends StatelessWidget {
   }
 
   List<TextSpan> _parseValue(String value) {
-    final regex = RegExp(r'\*([^*]+)\*');
-    final matches = regex.allMatches(value);
+    final regex = RegExp(r'(\*[^*]+\*|\|[^|]+\|)');
     final spans = <TextSpan>[];
     int currentIndex = 0;
 
-    for (final match in matches) {
+    for (final match in regex.allMatches(value)) {
       if (match.start > currentIndex) {
         spans.add(TextSpan(text: value.substring(currentIndex, match.start)));
       }
-      spans.add(
-        TextSpan(
-          text: match.group(1),
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-      );
+
+      final matchedText = match.group(0)!;
+      if (matchedText.startsWith('*') && matchedText.endsWith('*')) {
+        spans.add(
+          TextSpan(
+            text: matchedText.substring(1, matchedText.length - 1),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        );
+      } else if (matchedText.startsWith('|') && matchedText.endsWith('|')) {
+        spans.add(
+          TextSpan(
+            text: matchedText.substring(1, matchedText.length - 1),
+            style: const TextStyle(color: Colors.grey),
+          ),
+        );
+      }
+
       currentIndex = match.end;
     }
 
