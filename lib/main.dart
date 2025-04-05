@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import 'models/mcp_dict.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,116 +14,149 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Hanzi Dictionary',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const SearchPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _SearchPageState extends State<SearchPage> {
+  final TextEditingController _searchController = TextEditingController();
+  List<McpDict> _results = [];
+  late Database _database;
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    super.initState();
+    if (!kIsWeb &&
+        (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+    }
+    _initDatabase();
+  }
+
+  Future<void> _initDatabase() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, 'mcpdict.db');
+
+    // 确保目标目录存在
+    final directory = Directory(dbPath);
+    if (!await directory.exists()) {
+      await directory.create(recursive: true);
+    }
+
+    // 检查数据库文件是否存在
+    final file = File(path);
+    if (!await file.exists()) {
+      // 从 assets 文件夹复制数据库
+      final byteData = await rootBundle.load('assets/mcpdict.db');
+      final buffer = byteData.buffer;
+      await file.writeAsBytes(
+        buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
+      );
+    }
+
+    _database = await openDatabase(path, readOnly: true);
+  }
+
+  Future<void> _search(String query) async {
+    String searchQuery;
+
+    // 检查输入是否为汉字
+    if (query.codeUnits.every((unit) => unit >= 0x4E00 && unit <= 0x9FFF)) {
+      // 将汉字转换为 Unicode
+      searchQuery =
+          query.codeUnits
+              .map((unit) => unit.toRadixString(16).toUpperCase())
+              .join();
+    } else {
+      searchQuery = query;
+    }
+
+    final List<Map<String, dynamic>> maps = await _database.query(
+      'mcpdict',
+      where: 'unicode LIKE ? OR mc LIKE ? OR pu LIKE ?',
+      whereArgs: ['%$searchQuery%', '%$searchQuery%', '%$searchQuery%'],
+    );
+
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _results = maps.map((map) => McpDict.fromJson(map)).toList();
     });
   }
 
   @override
+  void dispose() {
+    _database.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      appBar: AppBar(title: const Text('Hanzi Dictionary')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+          children: [
+            TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                labelText: 'Search',
+                border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () => _search(_searchController.text),
+                ),
+              ),
+              onSubmitted: _search,
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _results.length,
+                itemBuilder: (context, index) {
+                  final item = _results[index];
+                  return HanziCard(item: item);
+                },
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class HanziCard extends StatelessWidget {
+  final McpDict item;
+
+  const HanziCard({required this.item, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        // 将 title 从 Unicode 转换为对应的汉字
+        title: Text(
+          String.fromCharCode(int.parse(item.unicode ?? '0', radix: 16)),
+        ),
+        subtitle: Text('MC: ${item.mc}, PU: ${item.pu}'),
+      ),
     );
   }
 }
