@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:kana_kit/kana_kit.dart';
 import 'mcp_dict.dart';
 
 class HanziCard extends StatelessWidget {
   final McpDict item;
+  final KanaKit _kanaKit = KanaKit();
 
-  const HanziCard({required this.item, super.key});
+  HanziCard({required this.item, super.key});
+
+  String _convertToKana(String? text) {
+    if (text == null || text == "N/A") {
+      return text ?? "N/A";
+    }
+    return _kanaKit.toKana(text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,27 +106,27 @@ class HanziCard extends StatelessWidget {
                             _buildAttributeRow(
                               context,
                               'assets/drawable/lang_jp_go.png',
-                              item.jpGo,
+                              _convertToKana(item.jpGo),
                             ),
                             _buildAttributeRow(
                               context,
                               'assets/drawable/lang_jp_kan.png',
-                              item.jpKan,
+                              _convertToKana(item.jpKan),
                             ),
                             _buildAttributeRow(
                               context,
                               'assets/drawable/lang_jp_tou.png',
-                              item.jpTou,
+                              _convertToKana(item.jpTou),
                             ),
                             _buildAttributeRow(
                               context,
                               'assets/drawable/lang_jp_kwan.png',
-                              item.jpKwan,
+                              _convertToKana(item.jpKwan),
                             ),
                             _buildAttributeRow(
                               context,
                               'assets/drawable/lang_jp_other.png',
-                              item.jpOther,
+                              _convertToKana(item.jpOther),
                             ),
                           ],
                         ),
