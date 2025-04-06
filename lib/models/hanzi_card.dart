@@ -31,6 +31,7 @@ class HanziCard extends StatelessWidget {
                     int.parse(item.unicode ?? '0', radix: 16),
                   ),
                   style: const TextStyle(
+                    color: Colors.red,
                     fontSize: 48.0,
                     fontWeight: FontWeight.bold,
                   ),

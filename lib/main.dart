@@ -167,11 +167,11 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Hanzi Dictionary')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
                 labelText: 'Search',
@@ -183,18 +183,17 @@ class _SearchPageState extends State<SearchPage> {
               ),
               onSubmitted: _search,
             ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _results.length,
-                itemBuilder: (context, index) {
-                  final item = _results[index];
-                  return HanziCard(item: item);
-                },
-              ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _results.length,
+              itemBuilder: (context, index) {
+                final item = _results[index];
+                return HanziCard(item: item);
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
