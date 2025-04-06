@@ -54,11 +54,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> pages = [
-      const SearchPage(),
-      SettingsPage(themeMode: _themeMode, onThemeModeChanged: _updateThemeMode),
-    ];
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Hanzi Dictionary',
@@ -72,19 +67,62 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.dark,
       ),
       themeMode: _themeMode,
-      home: Scaffold(
-        body: IndexedStack(index: _selectedIndex, children: pages),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
+      home: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWideScreen = constraints.maxWidth >= 600;
+
+          return Scaffold(
+            body: Row(
+              children: [
+                if (isWideScreen)
+                  NavigationRail(
+                    selectedIndex: _selectedIndex,
+                    onDestinationSelected: _onItemTapped,
+                    labelType: NavigationRailLabelType.all, // 显示图标和文字
+                    destinations: const [
+                      NavigationRailDestination(
+                        icon: Icon(Icons.home),
+                        label: Text('Home'),
+                      ),
+                      NavigationRailDestination(
+                        icon: Icon(Icons.settings),
+                        label: Text('Settings'),
+                      ),
+                    ],
+                  ),
+                Expanded(
+                  child: IndexedStack(
+                    index: _selectedIndex,
+                    children: [
+                      const SearchPage(),
+                      SettingsPage(
+                        themeMode: _themeMode,
+                        onThemeModeChanged: _updateThemeMode,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-        ),
+            bottomNavigationBar:
+                isWideScreen
+                    ? null
+                    : BottomNavigationBar(
+                      items: const [
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.home),
+                          label: 'Home',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.settings),
+                          label: 'Settings',
+                        ),
+                      ],
+                      currentIndex: _selectedIndex,
+                      onTap: _onItemTapped,
+                    ),
+          );
+        },
       ),
     );
   }
