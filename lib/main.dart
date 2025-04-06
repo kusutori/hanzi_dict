@@ -18,6 +18,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.system;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -45,8 +46,19 @@ class _MyAppState extends State<MyApp> {
     _saveThemeMode(themeMode);
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      const SearchPage(),
+      SettingsPage(themeMode: _themeMode, onThemeModeChanged: _updateThemeMode),
+    ];
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Hanzi Dictionary',
@@ -60,14 +72,20 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.dark,
       ),
       themeMode: _themeMode,
-      home: const SearchPage(),
-      routes: {
-        '/settings':
-            (context) => SettingsPage(
-              themeMode: _themeMode,
-              onThemeModeChanged: _updateThemeMode,
+      home: Scaffold(
+        body: IndexedStack(index: _selectedIndex, children: pages),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
             ),
-      },
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
+      ),
     );
   }
 }
@@ -110,15 +128,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Hanzi Dictionary'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => Navigator.pushNamed(context, '/settings'),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Hanzi Dictionary')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

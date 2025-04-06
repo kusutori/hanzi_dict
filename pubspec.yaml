@@ -40,6 +40,8 @@ dependencies:
   path_provider:
   path:
   kana_kit: 2.1.1
+  # flutter_kpop:
+  #   path: ../kpop/flutter_kpop
 dev_dependencies:
   flutter_test:
     sdk: flutter
