@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'database_helper.dart';
 import 'models/hanzi_card.dart';
 import 'models/mcp_dict.dart';
 import 'settings_page.dart';
 import 'theme.dart'; // 引入拆分的主题文件
 import 'favorites_page.dart';
+import 'models/favorites_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => FavoritesProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -59,7 +66,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final List<Widget> _pages = [
       const SearchPage(),
-      FavoritesPage(favorites: _favorites),
+      FavoritesPage(),
       SettingsPage(themeMode: _themeMode, onThemeModeChanged: _updateThemeMode),
     ];
 
@@ -199,10 +206,7 @@ class _SearchPageState extends State<SearchPage> {
               itemCount: _results.length,
               itemBuilder: (context, index) {
                 final item = _results[index];
-                return HanziCard(
-                  item: item,
-                  onFavorite: () => _addToFavorites(item),
-                );
+                return HanziCard(item: item);
               },
             ),
           ),

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kana_kit/kana_kit.dart';
+import 'package:provider/provider.dart';
 import 'mcp_dict.dart';
+import 'favorites_provider.dart';
 
 class HanziCard extends StatelessWidget {
   final McpDict item;
-  final VoidCallback onFavorite;
   final KanaKit _kanaKit = KanaKit();
 
-  HanziCard({required this.item, required this.onFavorite, super.key});
+  HanziCard({required this.item, super.key});
 
   String _convertToKana(String? text) {
     if (text == null || text == "N/A") {
@@ -18,6 +19,9 @@ class HanziCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final favoritesProvider = Provider.of<FavoritesProvider>(context);
+    final isFavorite = favoritesProvider.isFavorite(item);
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -139,8 +143,17 @@ class HanziCard extends StatelessWidget {
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.favorite_border),
-              onPressed: onFavorite,
+              icon: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite ? Colors.red : null,
+              ),
+              onPressed: () {
+                if (isFavorite) {
+                  favoritesProvider.removeFavorite(item);
+                } else {
+                  favoritesProvider.addFavorite(item);
+                }
+              },
             ),
           ],
         ),
