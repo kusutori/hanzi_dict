@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:catppuccin_flutter/catppuccin_flutter.dart';
 import 'database_helper.dart';
 import 'models/hanzi_card.dart';
 import 'models/mcp_dict.dart';
@@ -54,18 +55,29 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final lightTheme = ThemeData(
+      fontFamily: 'LXGWWenKai',
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: catppuccin.latte.mauve,
+        brightness: Brightness.light, // 确保与 ThemeData 的 brightness 一致
+      ),
+      useMaterial3: true,
+    );
+
+    final darkTheme = ThemeData(
+      fontFamily: 'LXGWWenKai',
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: catppuccin.frappe.mauve,
+        brightness: Brightness.dark, // 确保与 ThemeData 的 brightness 一致
+      ),
+      brightness: Brightness.dark,
+    );
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Hanzi Dictionary',
-      theme: ThemeData(
-        fontFamily: 'LXGWWenKai',
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        fontFamily: 'LXGWWenKai',
-        brightness: Brightness.dark,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       themeMode: _themeMode,
       home: LayoutBuilder(
         builder: (context, constraints) {

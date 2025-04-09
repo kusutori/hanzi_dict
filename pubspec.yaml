@@ -40,6 +40,7 @@ dependencies:
   path_provider:
   path:
   kana_kit: 2.1.1
+  catppuccin_flutter: ^1.0.0
   # flutter_kpop:
   #   path: ../kpop/flutter_kpop
 dev_dependencies:
