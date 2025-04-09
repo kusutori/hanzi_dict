@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:catppuccin_flutter/catppuccin_flutter.dart';
 import 'database_helper.dart';
 import 'models/hanzi_card.dart';
 import 'models/mcp_dict.dart';
 import 'settings_page.dart';
+import 'theme.dart'; // 引入拆分的主题文件
 
 void main() {
   runApp(const MyApp());
@@ -55,24 +55,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final lightTheme = ThemeData(
-      fontFamily: 'LXGWWenKai',
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: catppuccin.latte.mauve,
-        brightness: Brightness.light, // 确保与 ThemeData 的 brightness 一致
-      ),
-      useMaterial3: true,
-    );
-
-    final darkTheme = ThemeData(
-      fontFamily: 'LXGWWenKai',
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: catppuccin.frappe.mauve,
-        brightness: Brightness.dark, // 确保与 ThemeData 的 brightness 一致
-      ),
-      brightness: Brightness.dark,
-    );
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Hanzi Dictionary',
