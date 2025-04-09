@@ -4,9 +4,10 @@ import 'mcp_dict.dart';
 
 class HanziCard extends StatelessWidget {
   final McpDict item;
+  final VoidCallback onFavorite;
   final KanaKit _kanaKit = KanaKit();
 
-  HanziCard({required this.item, super.key});
+  HanziCard({required this.item, required this.onFavorite, super.key});
 
   String _convertToKana(String? text) {
     if (text == null || text == "N/A") {
@@ -136,6 +137,10 @@ class HanziCard extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.favorite_border),
+              onPressed: onFavorite,
             ),
           ],
         ),

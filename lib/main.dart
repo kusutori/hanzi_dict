@@ -5,6 +5,7 @@ import 'models/hanzi_card.dart';
 import 'models/mcp_dict.dart';
 import 'settings_page.dart';
 import 'theme.dart'; // 引入拆分的主题文件
+import 'favorites_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +21,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.system;
   int _selectedIndex = 0;
+  final List<McpDict> _favorites = [];
 
   @override
   void initState() {
@@ -55,6 +57,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _pages = [
+      const SearchPage(),
+      FavoritesPage(favorites: _favorites),
+      SettingsPage(themeMode: _themeMode, onThemeModeChanged: _updateThemeMode),
+    ];
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Hanzi Dictionary',
@@ -79,22 +87,17 @@ class _MyAppState extends State<MyApp> {
                         label: Text('Home'),
                       ),
                       NavigationRailDestination(
+                        icon: Icon(Icons.favorite),
+                        label: Text('Favorites'),
+                      ),
+                      NavigationRailDestination(
                         icon: Icon(Icons.settings),
                         label: Text('Settings'),
                       ),
                     ],
                   ),
                 Expanded(
-                  child: IndexedStack(
-                    index: _selectedIndex,
-                    children: [
-                      const SearchPage(),
-                      SettingsPage(
-                        themeMode: _themeMode,
-                        onThemeModeChanged: _updateThemeMode,
-                      ),
-                    ],
-                  ),
+                  child: IndexedStack(index: _selectedIndex, children: _pages),
                 ),
               ],
             ),
@@ -106,6 +109,10 @@ class _MyAppState extends State<MyApp> {
                         BottomNavigationBarItem(
                           icon: Icon(Icons.home),
                           label: 'Home',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.favorite),
+                          label: 'Favorites',
                         ),
                         BottomNavigationBarItem(
                           icon: Icon(Icons.settings),
@@ -133,6 +140,7 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   final DatabaseHelper _dbHelper = DatabaseHelper();
   List<McpDict> _results = [];
+  final List<McpDict> _favorites = [];
 
   @override
   void initState() {
@@ -148,6 +156,14 @@ class _SearchPageState extends State<SearchPage> {
     final results = await _dbHelper.search(query);
     setState(() {
       _results = results;
+    });
+  }
+
+  void _addToFavorites(McpDict item) {
+    setState(() {
+      if (!_favorites.contains(item)) {
+        _favorites.add(item);
+      }
     });
   }
 
@@ -183,7 +199,10 @@ class _SearchPageState extends State<SearchPage> {
               itemCount: _results.length,
               itemBuilder: (context, index) {
                 final item = _results[index];
-                return HanziCard(item: item);
+                return HanziCard(
+                  item: item,
+                  onFavorite: () => _addToFavorites(item),
+                );
               },
             ),
           ),
