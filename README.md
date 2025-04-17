@@ -54,3 +54,6 @@
 ## 许可证
 
 此项目使用 MIT 许可证。
+
+## 第三方许可证
+- [MCPDict] 的许可证见 [LICENSE/LICENSE](./LICENSES/LICENSE)。
