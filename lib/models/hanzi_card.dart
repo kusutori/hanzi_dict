@@ -40,7 +40,7 @@ class HanziCard extends StatelessWidget {
               // 左侧显示汉字和 Unicode
               Column(
                 children: [
-                  Text(
+                  SelectableText(
                     String.fromCharCode(
                       int.parse(item.unicode ?? '0', radix: 16),
                     ),
@@ -181,8 +181,8 @@ class HanziCard extends StatelessWidget {
         Image.asset(imagePath, width: 24.0, height: 24.0),
         const SizedBox(width: 8.0),
         Expanded(
-          child: RichText(
-            text: TextSpan(
+          child: SelectableText.rich(
+            TextSpan(
               style: DefaultTextStyle.of(context).style,
               children: _parseValue(value ?? "N/A"),
             ),

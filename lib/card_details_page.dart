@@ -50,7 +50,7 @@ class CardDetailsPage extends StatelessWidget {
             Row(
               children: [
                 // 左侧大字号汉字
-                Text(
+                SelectableText(
                   String.fromCharCode(
                     int.parse(item.unicode ?? '0', radix: 16),
                   ),
@@ -187,11 +187,10 @@ class CardDetailsPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 16.0),
-          // 语言值
+          const SizedBox(width: 16.0), // 语言值
           Expanded(
-            child: RichText(
-              text: TextSpan(
+            child: SelectableText.rich(
+              TextSpan(
                 style: DefaultTextStyle.of(context).style.copyWith(
                   fontSize: 16.0,
                   color: Theme.of(context).textTheme.bodyMedium?.color,
