@@ -28,7 +28,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.system;
   int _selectedIndex = 0;
-  final List<McpDict> _favorites = [];
 
   @override
   void initState() {
@@ -64,9 +63,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _pages = [
+    final List<Widget> pages = [
       const SearchPage(),
-      FavoritesPage(),
+      const FavoritesPage(),
       SettingsPage(themeMode: _themeMode, onThemeModeChanged: _updateThemeMode),
     ];
 
@@ -104,7 +103,7 @@ class _MyAppState extends State<MyApp> {
                     ],
                   ),
                 Expanded(
-                  child: IndexedStack(index: _selectedIndex, children: _pages),
+                  child: IndexedStack(index: _selectedIndex, children: pages),
                 ),
               ],
             ),
@@ -147,7 +146,6 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   final DatabaseHelper _dbHelper = DatabaseHelper();
   List<McpDict> _results = [];
-  final List<McpDict> _favorites = [];
 
   @override
   void initState() {
@@ -163,14 +161,6 @@ class _SearchPageState extends State<SearchPage> {
     final results = await _dbHelper.search(query);
     setState(() {
       _results = results;
-    });
-  }
-
-  void _addToFavorites(McpDict item) {
-    setState(() {
-      if (!_favorites.contains(item)) {
-        _favorites.add(item);
-      }
     });
   }
 

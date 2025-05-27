@@ -5,6 +5,8 @@ import 'models/hanzi_card.dart';
 import 'models/favorites_provider.dart';
 
 class FavoritesPage extends StatelessWidget {
+  const FavoritesPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final favorites = Provider.of<FavoritesProvider>(context).favorites;
