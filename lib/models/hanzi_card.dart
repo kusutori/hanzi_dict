@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:provider/provider.dart';
+import '../card_details_page.dart';
 import 'mcp_dict.dart';
 import 'favorites_provider.dart';
 
@@ -22,140 +23,149 @@ class HanziCard extends StatelessWidget {
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
     final isFavorite = favoritesProvider.isFavorite(item);
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 左侧显示汉字和 Unicode
-            Column(
-              children: [
-                Text(
-                  String.fromCharCode(
-                    int.parse(item.unicode ?? '0', radix: 16),
-                  ),
-                  style: const TextStyle(
-                    color: Colors.red,
-                    fontSize: 48.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                Text(
-                  'U+${item.unicode?.toUpperCase() ?? "N/A"}',
-                  style: const TextStyle(fontSize: 16.0, color: Colors.grey),
-                ),
-              ],
-            ),
-            const SizedBox(width: 16),
-            // 右侧内容
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      // 添加 GestureDetector 以处理点击事件
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CardDetailsPage(item: item)),
+        );
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 左侧显示汉字和 Unicode
+              Column(
                 children: [
-                  // 第一行单独显示 MC
-                  _buildAttributeRow(
-                    context,
-                    'assets/drawable/lang_mc.png',
-                    item.mc,
+                  Text(
+                    String.fromCharCode(
+                      int.parse(item.unicode ?? '0', radix: 16),
+                    ),
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 48.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 8.0),
-                  // 剩余属性分为两列
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 左列
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildAttributeRow(
-                              context,
-                              'assets/drawable/lang_pu.png',
-                              item.pu,
-                            ),
-                            _buildAttributeRow(
-                              context,
-                              'assets/drawable/lang_ct.png',
-                              item.ct,
-                            ),
-                            _buildAttributeRow(
-                              context,
-                              'assets/drawable/lang_sh.png',
-                              item.sh,
-                            ),
-                            _buildAttributeRow(
-                              context,
-                              'assets/drawable/lang_mn.png',
-                              item.mn,
-                            ),
-                            _buildAttributeRow(
-                              context,
-                              'assets/drawable/lang_kr.png',
-                              item.kr,
-                            ),
-                            _buildAttributeRow(
-                              context,
-                              'assets/drawable/lang_vn.png',
-                              item.vn,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 16.0),
-                      // 右列
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildAttributeRow(
-                              context,
-                              'assets/drawable/lang_jp_go.png',
-                              _convertToKana(item.jpGo),
-                            ),
-                            _buildAttributeRow(
-                              context,
-                              'assets/drawable/lang_jp_kan.png',
-                              _convertToKana(item.jpKan),
-                            ),
-                            _buildAttributeRow(
-                              context,
-                              'assets/drawable/lang_jp_tou.png',
-                              _convertToKana(item.jpTou),
-                            ),
-                            _buildAttributeRow(
-                              context,
-                              'assets/drawable/lang_jp_kwan.png',
-                              _convertToKana(item.jpKwan),
-                            ),
-                            _buildAttributeRow(
-                              context,
-                              'assets/drawable/lang_jp_other.png',
-                              _convertToKana(item.jpOther),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  Text(
+                    'U+${item.unicode?.toUpperCase() ?? "N/A"}',
+                    style: const TextStyle(fontSize: 16.0, color: Colors.grey),
                   ),
                 ],
               ),
-            ),
-            IconButton(
-              icon: Icon(
-                isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: isFavorite ? Colors.red : null,
+              const SizedBox(width: 16),
+              // 右侧内容
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 第一行单独显示 MC
+                    _buildAttributeRow(
+                      context,
+                      'assets/drawable/lang_mc.png',
+                      item.mc,
+                    ),
+                    const SizedBox(height: 8.0),
+                    // 剩余属性分为两列
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 左列
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildAttributeRow(
+                                context,
+                                'assets/drawable/lang_pu.png',
+                                item.pu,
+                              ),
+                              _buildAttributeRow(
+                                context,
+                                'assets/drawable/lang_ct.png',
+                                item.ct,
+                              ),
+                              _buildAttributeRow(
+                                context,
+                                'assets/drawable/lang_sh.png',
+                                item.sh,
+                              ),
+                              _buildAttributeRow(
+                                context,
+                                'assets/drawable/lang_mn.png',
+                                item.mn,
+                              ),
+                              _buildAttributeRow(
+                                context,
+                                'assets/drawable/lang_kr.png',
+                                item.kr,
+                              ),
+                              _buildAttributeRow(
+                                context,
+                                'assets/drawable/lang_vn.png',
+                                item.vn,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16.0),
+                        // 右列
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildAttributeRow(
+                                context,
+                                'assets/drawable/lang_jp_go.png',
+                                _convertToKana(item.jpGo),
+                              ),
+                              _buildAttributeRow(
+                                context,
+                                'assets/drawable/lang_jp_kan.png',
+                                _convertToKana(item.jpKan),
+                              ),
+                              _buildAttributeRow(
+                                context,
+                                'assets/drawable/lang_jp_tou.png',
+                                _convertToKana(item.jpTou),
+                              ),
+                              _buildAttributeRow(
+                                context,
+                                'assets/drawable/lang_jp_kwan.png',
+                                _convertToKana(item.jpKwan),
+                              ),
+                              _buildAttributeRow(
+                                context,
+                                'assets/drawable/lang_jp_other.png',
+                                _convertToKana(item.jpOther),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              onPressed: () {
-                if (isFavorite) {
-                  favoritesProvider.removeFavorite(item);
-                } else {
-                  favoritesProvider.addFavorite(item);
-                }
-              },
-            ),
-          ],
+              IconButton(
+                icon: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite ? Colors.red : null,
+                ),
+                onPressed: () {
+                  if (isFavorite) {
+                    favoritesProvider.removeFavorite(item);
+                  } else {
+                    favoritesProvider.addFavorite(item);
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
