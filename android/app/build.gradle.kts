@@ -33,11 +33,11 @@ android {
     
     signingConfigs {
         release {
-            if (project.hasProperty('ANDROID_KEYSTORE_PATH')) {
-                storeFile file(project.property('ANDROID_KEYSTORE_PATH'))
-                storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD") ?: project.property('ANDROID_KEYSTORE_PASSWORD')
-                keyAlias System.getenv("ANDROID_KEY_ALIAS") ?: project.property('ANDROID_KEY_ALIAS')
-                keyPassword System.getenv("ANDROID_KEY_PASSWORD") ?: project.property('ANDROID_KEY_PASSWORD')
+            if (project.hasProperty("ANDROID_KEYSTORE_PATH")) {
+                storeFile file(project.property("ANDROID_KEYSTORE_PATH"))
+                storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD") ?: project.property("ANDROID_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("ANDROID_KEY_ALIAS") ?: project.property("ANDROID_KEY_ALIAS")
+                keyPassword System.getenv("ANDROID_KEY_PASSWORD") ?: project.property("ANDROID_KEY_PASSWORD")
             }
         }
     }
@@ -47,7 +47,7 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.release
-            signingConfig = signingConfigs.getByName("debug")
+            // signingConfig = signingConfigs.getByName("debug")
         }
     }
 }
