@@ -22,16 +22,16 @@ class HanziCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
     final isFavorite = favoritesProvider.isFavorite(item);
-
-    return GestureDetector(
-      // 添加 GestureDetector 以处理点击事件
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CardDetailsPage(item: item)),
-        );
-      },
-      child: Card(
+    return Card(
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CardDetailsPage(item: item),
+            ),
+          );
+        },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -40,18 +40,22 @@ class HanziCard extends StatelessWidget {
               // 左侧显示汉字和 Unicode
               Column(
                 children: [
-                  SelectableText(
-                    String.fromCharCode(
-                      int.parse(item.unicode ?? '0', radix: 16),
-                    ),
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 48.0,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    width: 80,
+                    child: SelectableText(
+                      String.fromCharCode(
+                        int.parse(item.unicode ?? '0', radix: 16),
+                      ),
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 48.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   const SizedBox(height: 8.0),
-                  Text(
+                  SelectableText(
                     'U+${item.unicode?.toUpperCase() ?? "N/A"}',
                     style: const TextStyle(fontSize: 16.0, color: Colors.grey),
                   ),
@@ -180,11 +184,14 @@ class HanziCard extends StatelessWidget {
       children: [
         Image.asset(imagePath, width: 24.0, height: 24.0),
         const SizedBox(width: 8.0),
-        Expanded(
-          child: SelectableText.rich(
-            TextSpan(
-              style: DefaultTextStyle.of(context).style,
-              children: _parseValue(value ?? "N/A"),
+        Flexible(
+          child: Container(
+            child: SelectableText.rich(
+              TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: _parseValue(value ?? "N/A"),
+              ),
+              style: const TextStyle(fontSize: 14.0),
             ),
           ),
         ),
