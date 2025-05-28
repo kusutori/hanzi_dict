@@ -16,7 +16,8 @@ import java.io.IOException // 为了 try-catch 块
 
 // 这是你之前步骤中添加的用于加载属性的代码块。
 // 它应该在 import 语句之后。
-val keystorePropertiesFile = rootProject.file("../key.properties")
+// val keystorePropertiesFile = rootProject.file("../key.properties")
+val keystorePropertiesFile = project.rootDir.resolve("key.properties") // 使用 project.rootDir 代替 rootProject.file
 val keystoreProperties = Properties() // 现在可以直接使用 Properties()
 if (keystorePropertiesFile.exists()) {
     try {
@@ -34,7 +35,8 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "com.example.hanzi_dict"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973" // 确保 NDK 版本与 Flutter 版本兼容
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
