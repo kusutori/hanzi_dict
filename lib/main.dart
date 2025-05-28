@@ -8,11 +8,16 @@ import 'settings_page.dart';
 import 'theme.dart'; // 引入拆分的主题文件
 import 'favorites_page.dart';
 import 'models/favorites_provider.dart';
+import 'models/language_provider.dart';
+import 'l10n/app_localizations.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => FavoritesProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => FavoritesProvider()),
+        ChangeNotifierProvider(create: (context) => LanguageProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -69,68 +74,79 @@ class _MyAppState extends State<MyApp> {
       SettingsPage(themeMode: _themeMode, onThemeModeChanged: _updateThemeMode),
     ];
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Hanzi Dictionary',
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: _themeMode,
-      home: LayoutBuilder(
-        builder: (context, constraints) {
-          final isWideScreen = constraints.maxWidth >= 600;
+    return Consumer<LanguageProvider>(
+      builder: (context, languageProvider, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Hanzi Dictionary',
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: _themeMode,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: languageProvider.currentLocale,
+          home: LayoutBuilder(
+            builder: (context, constraints) {
+              final isWideScreen = constraints.maxWidth >= 600;
+              final localizations = AppLocalizations.of(context)!;
 
-          return Scaffold(
-            body: Row(
-              children: [
-                if (isWideScreen)
-                  NavigationRail(
-                    selectedIndex: _selectedIndex,
-                    onDestinationSelected: _onItemTapped,
-                    labelType: NavigationRailLabelType.all, // 显示图标和文字
-                    destinations: const [
-                      NavigationRailDestination(
-                        icon: Icon(Icons.home),
-                        label: Text('Home'),
+              return Scaffold(
+                body: Row(
+                  children: [
+                    if (isWideScreen)
+                      NavigationRail(
+                        selectedIndex: _selectedIndex,
+                        onDestinationSelected: _onItemTapped,
+                        labelType: NavigationRailLabelType.all, // 显示图标和文字
+                        destinations: [
+                          NavigationRailDestination(
+                            icon: const Icon(Icons.home),
+                            label: Text(localizations.home),
+                          ),
+                          NavigationRailDestination(
+                            icon: const Icon(Icons.favorite),
+                            label: Text(localizations.favorites),
+                          ),
+                          NavigationRailDestination(
+                            icon: const Icon(Icons.settings),
+                            label: Text(localizations.settings),
+                          ),
+                        ],
                       ),
-                      NavigationRailDestination(
-                        icon: Icon(Icons.favorite),
-                        label: Text('Favorites'),
+                    Expanded(
+                      child: IndexedStack(
+                        index: _selectedIndex,
+                        children: pages,
                       ),
-                      NavigationRailDestination(
-                        icon: Icon(Icons.settings),
-                        label: Text('Settings'),
-                      ),
-                    ],
-                  ),
-                Expanded(
-                  child: IndexedStack(index: _selectedIndex, children: pages),
-                ),
-              ],
-            ),
-            bottomNavigationBar:
-                isWideScreen
-                    ? null
-                    : BottomNavigationBar(
-                      items: const [
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.home),
-                          label: 'Home',
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.favorite),
-                          label: 'Favorites',
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.settings),
-                          label: 'Settings',
-                        ),
-                      ],
-                      currentIndex: _selectedIndex,
-                      onTap: _onItemTapped,
                     ),
-          );
-        },
-      ),
+                  ],
+                ),
+                bottomNavigationBar:
+                    isWideScreen
+                        ? null
+                        : BottomNavigationBar(
+                          items: [
+                            BottomNavigationBarItem(
+                              icon: const Icon(Icons.home),
+                              label: localizations.home,
+                            ),
+                            BottomNavigationBarItem(
+                              icon: const Icon(Icons.favorite),
+                              label: localizations.favorites,
+                            ),
+                            BottomNavigationBarItem(
+                              icon: const Icon(Icons.settings),
+                              label: localizations.settings,
+                            ),
+                          ],
+                          currentIndex: _selectedIndex,
+                          onTap: _onItemTapped,
+                        ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
@@ -172,8 +188,10 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Hanzi Dictionary')),
+      appBar: AppBar(title: Text(localizations.appTitle)),
       body: Column(
         children: [
           Padding(
@@ -181,7 +199,8 @@ class _SearchPageState extends State<SearchPage> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                labelText: 'Search',
+                labelText: localizations.search,
+                hintText: localizations.searchHint,
                 border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search),

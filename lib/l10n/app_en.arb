@@ -1,0 +1,131 @@
+{
+    "@@locale": "en",
+    "appTitle": "Hanzi Dictionary",
+    "@appTitle": {
+        "description": "The title of the application"
+    },
+    "home": "Home",
+    "@home": {
+        "description": "Home tab label"
+    },
+    "favorites": "Favorites",
+    "@favorites": {
+        "description": "Favorites tab label"
+    },
+    "settings": "Settings",
+    "@settings": {
+        "description": "Settings tab label"
+    },
+    "search": "Search",
+    "@search": {
+        "description": "Search field label"
+    },
+    "searchHint": "Enter characters or pronunciation to search",
+    "@searchHint": {
+        "description": "Hint text for search field"
+    },
+    "noFavoritesYet": "No favorites yet.",
+    "@noFavoritesYet": {
+        "description": "Message when favorites list is empty"
+    },
+    "hanziDetails": "Character Details",
+    "@hanziDetails": {
+        "description": "Title for character details page"
+    },
+    "unicode": "Unicode",
+    "@unicode": {
+        "description": "Unicode label"
+    },
+    "themeMode": "Theme Mode",
+    "@themeMode": {
+        "description": "Theme mode setting label"
+    },
+    "systemDefault": "System Default",
+    "@systemDefault": {
+        "description": "System default theme option"
+    },
+    "lightMode": "Light Mode",
+    "@lightMode": {
+        "description": "Light theme option"
+    },
+    "darkMode": "Dark Mode",
+    "@darkMode": {
+        "description": "Dark theme option"
+    },
+    "languageSettings": "Language Settings",
+    "@languageSettings": {
+        "description": "Language settings section title"
+    },
+    "followSystem": "Follow System",
+    "@followSystem": {
+        "description": "Follow system language option"
+    },
+    "chinese": "中文",
+    "@chinese": {
+        "description": "Chinese language option"
+    },
+    "english": "English",
+    "@english": {
+        "description": "English language option"
+    },
+    "middleChinese": "Middle Chinese",
+    "@middleChinese": {
+        "description": "Middle Chinese language label"
+    },
+    "mandarin": "Mandarin",
+    "@mandarin": {
+        "description": "Mandarin Chinese language label"
+    },
+    "cantonese": "Cantonese",
+    "@cantonese": {
+        "description": "Cantonese language label"
+    },
+    "shanghainese": "Shanghainese",
+    "@shanghainese": {
+        "description": "Shanghainese language label"
+    },
+    "minnan": "Min Nan",
+    "@minnan": {
+        "description": "Min Nan language label"
+    },
+    "korean": "Korean",
+    "@korean": {
+        "description": "Korean language label"
+    },
+    "vietnamese": "Vietnamese",
+    "@vietnamese": {
+        "description": "Vietnamese language label"
+    },
+    "japaneseGo": "Japanese Go-on",
+    "@japaneseGo": {
+        "description": "Japanese Go-on reading label"
+    },
+    "japaneseKan": "Japanese Kan-on",
+    "@japaneseKan": {
+        "description": "Japanese Kan-on reading label"
+    },
+    "japaneseTou": "Japanese Tō-on",
+    "@japaneseTou": {
+        "description": "Japanese Tō-on reading label"
+    },
+    "japaneseKwan": "Japanese Kwan-on",
+    "@japaneseKwan": {
+        "description": "Japanese Kwan-on reading label"
+    },
+    "japaneseOther": "Japanese Other",
+    "@japaneseOther": {
+        "description": "Japanese other reading label"
+    },
+    "playPronunciation": "Play Pronunciation",
+    "@playPronunciation": {
+        "description": "Tooltip for pronunciation button"
+    },
+    "pronunciationComingSoon": "Pronunciation feature coming soon",
+    "@pronunciationComingSoon": {
+        "description": "Message for upcoming pronunciation feature"
+    },
+    "language": "Language",
+    "@language": {
+        "description": "Language label"
+    }
+}
