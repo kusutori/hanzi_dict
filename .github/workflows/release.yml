@@ -33,46 +33,37 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
 
-      # 可选：运行测试以确保代码质量
-      # - name: Run Flutter tests
-      #   run: flutter test
+      - name: Extract version from Git tag
+        id: extract_version # 给这个步骤一个 ID，方便后续引用其输出
+        run: |
+          # github.ref_name 会给出触发工作流的 tag 名称，例如 'refs/tags/v1.0.5'
+          # 我们需要从中提取 'v1.0.5' 或 '1.0.5'
+          RAW_TAG=${{ github.ref_name }}
+          echo "Raw Git tag: $RAW_TAG"
 
-      # - name: Decode Android Keystore
-      #   id: decode_keystore
-      #   # 确保你已经在 GitHub Secrets 中设置了这些值
-      #   # ANDROID_KEYSTORE_BASE64: Keystore 文件内容的 Base64 编码字符串
-      #   # ANDROID_KEYSTORE_PASSWORD: Keystore 的密码
-      #   # ANDROID_KEY_ALIAS: 密钥的别名
-      #   # ANDROID_KEY_PASSWORD: 密钥的密码
-      #   env:
-      #     ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-      #   run: |
-      #     if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
-      #       echo "ANDROID_KEYSTORE_BASE64 secret is not set. Skipping keystore decoding."
-      #       # 如果没有 keystore，后续的 release build 可能会失败或构建成 debug 版本
-      #       # 你可以根据需要决定是否让 workflow 在此失败
-      #       # exit 1
-      #     else
-      #       echo "Decoding Keystore..."
-      #       echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
-      #       echo "Keystore decoded successfully."
-      #     fi
+          # 移除 'refs/tags/' 前缀
+          CLEAN_TAG=${RAW_TAG#refs/tags/}
+          echo "Cleaned tag: $CLEAN_TAG"
+          
+          # 移除 'v' 前缀 (如果存在) 作为 versionName
+          if [[ "$CLEAN_TAG" == v* ]]; then
+            VERSION_NAME="${CLEAN_TAG:1}"
+          else
+            VERSION_NAME="$CLEAN_TAG"
+          fi
+          
+          echo "Extracted Version Name: $VERSION_NAME"
+          echo "version_name=${VERSION_NAME}" >> $GITHUB_OUTPUT
+          
+          # 对于 versionCode (Android 的 build number)，它必须是一个整数，并且每次发布到商店时都应该递增。
+          # 一个简单的做法是使用 GitHub Actions 的运行编号 github.run_number。
+          # 如果你的 tag 格式是例如 v1.0.5+10 (其中 +10 是 versionCode)，你需要更复杂的解析逻辑。
+          # 这里我们使用 github.run_number 作为示例。
+          VERSION_CODE=${{ github.run_number }}
+          echo "Using Version Code (build number): $VERSION_CODE"
+          echo "version_code=${VERSION_CODE}" >> $GITHUB_OUTPUT
 
-      # - name: Create Android key.properties file
-      #   # 这个步骤创建 android/key.properties 文件，build.gradle 会使用它来签名应用
-      #   # 确保你的 android/app/build.gradle 文件配置了从这些属性读取签名信息
-      #   run: |
-      #     if [ -f "android/app/upload-keystore.jks" ]; then
-      #       echo "storeFile=upload-keystore.jks" > android/key.properties
-      #       echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/key.properties
-      #       echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/key.properties
-      #       echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/key.properties
-      #       echo "key.properties file created successfully."
-      #     else
-      #       echo "Keystore file not found. Skipping key.properties creation."
-      #       # 如果没有 keystore，后续的 release build 可能会失败或构建成 debug 版本
-      #     fi
-      #   working-directory: android # 确保在 android 目录下创建 key.properties
+      # ... (你现有的 Decode Android Keystore, Create key.properties 等步骤) ...
 
       - name: Decode Android Keystore
         id: decode_keystore
@@ -138,10 +129,21 @@ jobs:
       - name: Clean Flutter
         run: flutter clean
 
+      # - name: Build Android Release APK
+      #   run: flutter build apk --release
+      #   # Flutter build apk --release 默认会查找 android/key.properties 来获取签名信息
+      #   # 如果你的 build.gradle 配置不同，可能需要调整签名参数
+
       - name: Build Android Release APK
-        run: flutter build apk --release
-        # Flutter build apk --release 默认会查找 android/key.properties 来获取签名信息
-        # 如果你的 build.gradle 配置不同，可能需要调整签名参数
+        run: |
+          echo "Building APK with Version Name: ${{ steps.extract_version.outputs.version_name }} and Version Code: ${{ steps.extract_version.outputs.version_code }}"
+          flutter build apk --release \
+            --build-name="${{ steps.extract_version.outputs.version_name }}" \
+            --build-number="${{ steps.extract_version.outputs.version_code }}"
+          
+          # 验证构建产物中的版本（可选，但有助于调试）
+          # 注意：验证APK内部版本号比较复杂，通常不需要在CI中直接进行。
+          # 主要依赖 flutter build 命令正确执行。
 
       - name: Create GitHub Release
         id: create_release
