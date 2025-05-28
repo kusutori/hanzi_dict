@@ -1,5 +1,11 @@
 // android/app/build.gradle.kts
 
+// ⭐️ ADD THESE IMPORT STATEMENTS AT THE TOP ⭐️
+import java.util.Properties
+import java.io.FileInputStream
+import java.io.IOException // For the try-catch block
+
+
 // 1. 在文件顶部 (所有 plugins { ... } 块之后，android { ... } 块之前) 添加这部分
 //    用于加载由 GitHub Actions 创建的 key.properties 文件。
 //    这个 key.properties 文件应该位于 android/ 目录下。
