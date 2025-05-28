@@ -10,6 +10,8 @@ jobs:
   build_and_release_apk:
     name: Build and Release APK
     runs-on: ubuntu-latest # 使用 Ubuntu 最新版作为运行环境
+    permissions:
+      contents: write # 授予创建 Release 和上传附件的写入权限
 
     steps:
       - name:  Checkout code
