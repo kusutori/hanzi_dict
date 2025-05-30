@@ -8,32 +8,37 @@ import 'models/mcp_dict.dart';
 
 class DatabaseHelper {
   late Database _database;
-
   Future<void> initDatabase() async {
-    if (!kIsWeb &&
-        (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
-      sqfliteFfiInit();
-      databaseFactory = databaseFactoryFfi;
+    // Platform-specific initialization for non-web platforms
+    if (!kIsWeb) {
+      // Use defaultTargetPlatform for platform detection on native platforms
+      if (defaultTargetPlatform == TargetPlatform.windows ||
+          defaultTargetPlatform == TargetPlatform.linux ||
+          defaultTargetPlatform == TargetPlatform.macOS) {
+        sqfliteFfiInit();
+        databaseFactory = databaseFactoryFfi;
+      }
     }
-
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'mcpdict.db');
 
-    // 确保目标目录存在
-    final directory = Directory(dbPath);
-    if (!await directory.exists()) {
-      await directory.create(recursive: true);
-    }
+    // 确保目标目录存在 (only for non-web platforms)
+    if (!kIsWeb) {
+      final directory = Directory(dbPath);
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
 
-    // 检查数据库文件是否存在
-    final file = File(path);
-    if (!await file.exists()) {
-      // 从 assets 文件夹复制数据库
-      final byteData = await rootBundle.load('assets/mcpdict.db');
-      final buffer = byteData.buffer;
-      await file.writeAsBytes(
-        buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
-      );
+      // 检查数据库文件是否存在
+      final file = File(path);
+      if (!await file.exists()) {
+        // 从 assets 文件夹复制数据库
+        final byteData = await rootBundle.load('assets/mcpdict.db');
+        final buffer = byteData.buffer;
+        await file.writeAsBytes(
+          buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
+        );
+      }
     }
 
     _database = await openDatabase(path, readOnly: true);

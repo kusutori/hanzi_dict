@@ -127,5 +127,58 @@
     "language": "Language",
     "@language": {
         "description": "Language label"
+    },
+    "storageSettings": "Storage Settings",
+    "@storageSettings": {
+        "description": "Storage settings section title"
+    },
+    "exportFavorites": "Export Favorites",
+    "@exportFavorites": {
+        "description": "Export favorites button text"
+    },
+    "importFavorites": "Import Favorites",
+    "@importFavorites": {
+        "description": "Import favorites button text"
+    },
+    "selectStorageLocation": "Select Storage Location",
+    "@selectStorageLocation": {
+        "description": "Select storage location button text"
+    },
+    "currentStorageLocation": "Current Storage Location",
+    "@currentStorageLocation": {
+        "description": "Current storage location label"
+    },
+    "defaultLocation": "Default Location",
+    "@defaultLocation": {
+        "description": "Default storage location label"
+    },
+    "exportSuccess": "Favorites exported successfully",
+    "@exportSuccess": {
+        "description": "Export success message"
+    },
+    "importSuccess": "Favorites imported successfully",
+    "@importSuccess": {
+        "description": "Import success message"
+    },
+    "exportError": "Export failed",
+    "@exportError": {
+        "description": "Export error message"
+    },
+    "importError": "Import failed",
+    "@importError": {
+        "description": "Import error message"
+    },
+    "selectFile": "Select File",
+    "@selectFile": {
+        "description": "Select file dialog title"
+    },
+    "favoritesCount": "{count} favorites",
+    "@favoritesCount": {
+        "description": "Count of favorites",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     }
 }

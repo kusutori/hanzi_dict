@@ -7,20 +7,39 @@ import 'l10n/app_localizations.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final favorites = Provider.of<FavoritesProvider>(context).favorites;
+    final favoritesProvider = Provider.of<FavoritesProvider>(context);
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: Text(localizations.favorites)),
+      appBar: AppBar(
+        title: Text(localizations.favorites),
+        actions: [
+          if (favoritesProvider.favorites.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Center(
+                child: Text(
+                  localizations.favoritesCount(
+                    favoritesProvider.favoritesCount,
+                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ),
+        ],
+      ),
       body:
-          favorites.isEmpty
+          !favoritesProvider.isInitialized
+              ? const Center(child: CircularProgressIndicator())
+              : favoritesProvider.favorites.isEmpty
               ? Center(child: Text(localizations.noFavoritesYet))
               : ListView.builder(
-                itemCount: favorites.length,
+                itemCount: favoritesProvider.favorites.length,
                 itemBuilder: (context, index) {
-                  return HanziCard(item: favorites[index]);
+                  return HanziCard(item: favoritesProvider.favorites[index]);
                 },
               ),
     );

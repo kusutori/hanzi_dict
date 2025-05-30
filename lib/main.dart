@@ -18,9 +18,47 @@ void main() {
         ChangeNotifierProvider(create: (context) => FavoritesProvider()),
         ChangeNotifierProvider(create: (context) => LanguageProvider()),
       ],
-      child: const MyApp(),
+      child: const AppInitializer(),
     ),
   );
+}
+
+class AppInitializer extends StatefulWidget {
+  const AppInitializer({super.key});
+
+  @override
+  State<AppInitializer> createState() => _AppInitializerState();
+}
+
+class _AppInitializerState extends State<AppInitializer> {
+  bool _isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    final favoritesProvider = Provider.of<FavoritesProvider>(
+      context,
+      listen: false,
+    );
+    await favoritesProvider.initialize();
+    setState(() {
+      _isInitialized = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_isInitialized) {
+      return MaterialApp(
+        home: Scaffold(body: Center(child: CircularProgressIndicator())),
+      );
+    }
+    return const MyApp();
+  }
 }
 
 class MyApp extends StatefulWidget {

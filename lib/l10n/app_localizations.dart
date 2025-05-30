@@ -289,6 +289,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language'**
   String get language;
+
+  /// Storage settings section title
+  ///
+  /// In en, this message translates to:
+  /// **'Storage Settings'**
+  String get storageSettings;
+
+  /// Export favorites button text
+  ///
+  /// In en, this message translates to:
+  /// **'Export Favorites'**
+  String get exportFavorites;
+
+  /// Import favorites button text
+  ///
+  /// In en, this message translates to:
+  /// **'Import Favorites'**
+  String get importFavorites;
+
+  /// Select storage location button text
+  ///
+  /// In en, this message translates to:
+  /// **'Select Storage Location'**
+  String get selectStorageLocation;
+
+  /// Current storage location label
+  ///
+  /// In en, this message translates to:
+  /// **'Current Storage Location'**
+  String get currentStorageLocation;
+
+  /// Default storage location label
+  ///
+  /// In en, this message translates to:
+  /// **'Default Location'**
+  String get defaultLocation;
+
+  /// Export success message
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites exported successfully'**
+  String get exportSuccess;
+
+  /// Import success message
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites imported successfully'**
+  String get importSuccess;
+
+  /// Export error message
+  ///
+  /// In en, this message translates to:
+  /// **'Export failed'**
+  String get exportError;
+
+  /// Import error message
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed'**
+  String get importError;
+
+  /// Select file dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Select File'**
+  String get selectFile;
+
+  /// Count of favorites
+  ///
+  /// In en, this message translates to:
+  /// **'{count} favorites'**
+  String favoritesCount(int count);
 }
 
 class _AppLocalizationsDelegate

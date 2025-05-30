@@ -103,4 +103,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get language => 'Language';
+
+  @override
+  String get storageSettings => 'Storage Settings';
+
+  @override
+  String get exportFavorites => 'Export Favorites';
+
+  @override
+  String get importFavorites => 'Import Favorites';
+
+  @override
+  String get selectStorageLocation => 'Select Storage Location';
+
+  @override
+  String get currentStorageLocation => 'Current Storage Location';
+
+  @override
+  String get defaultLocation => 'Default Location';
+
+  @override
+  String get exportSuccess => 'Favorites exported successfully';
+
+  @override
+  String get importSuccess => 'Favorites imported successfully';
+
+  @override
+  String get exportError => 'Export failed';
+
+  @override
+  String get importError => 'Import failed';
+
+  @override
+  String get selectFile => 'Select File';
+
+  @override
+  String favoritesCount(int count) {
+    return '$count favorites';
+  }
 }

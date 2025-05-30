@@ -103,4 +103,42 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get language => '语言';
+
+  @override
+  String get storageSettings => '存储设置';
+
+  @override
+  String get exportFavorites => '导出收藏';
+
+  @override
+  String get importFavorites => '导入收藏';
+
+  @override
+  String get selectStorageLocation => '选择存储位置';
+
+  @override
+  String get currentStorageLocation => '当前存储位置';
+
+  @override
+  String get defaultLocation => '默认位置';
+
+  @override
+  String get exportSuccess => '收藏导出成功';
+
+  @override
+  String get importSuccess => '收藏导入成功';
+
+  @override
+  String get exportError => '导出失败';
+
+  @override
+  String get importError => '导入失败';
+
+  @override
+  String get selectFile => '选择文件';
+
+  @override
+  String favoritesCount(int count) {
+    return '$count 个收藏';
+  }
 }

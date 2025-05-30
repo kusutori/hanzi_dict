@@ -31,5 +31,17 @@
     "japaneseOther": "日语其他",
     "playPronunciation": "播放发音",
     "pronunciationComingSoon": "发音功能即将推出",
-    "language": "语言"
+    "language": "语言",
+    "storageSettings": "存储设置",
+    "exportFavorites": "导出收藏",
+    "importFavorites": "导入收藏",
+    "selectStorageLocation": "选择存储位置",
+    "currentStorageLocation": "当前存储位置",
+    "defaultLocation": "默认位置",
+    "exportSuccess": "收藏导出成功",
+    "importSuccess": "收藏导入成功",
+    "exportError": "导出失败",
+    "importError": "导入失败",
+    "selectFile": "选择文件",
+    "favoritesCount": "{count} 个收藏"
 }
