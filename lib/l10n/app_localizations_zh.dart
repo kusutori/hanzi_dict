@@ -141,4 +141,49 @@ class AppLocalizationsZh extends AppLocalizations {
   String favoritesCount(int count) {
     return '$count 个收藏';
   }
+
+  @override
+  String get colorTheme => '颜色主题';
+
+  @override
+  String get colorRosewater => '玫瑰水';
+
+  @override
+  String get colorFlamingo => '火烈鸟';
+
+  @override
+  String get colorPink => '粉红';
+
+  @override
+  String get colorMauve => '紫红';
+
+  @override
+  String get colorRed => '红色';
+
+  @override
+  String get colorMaroon => '栗色';
+
+  @override
+  String get colorPeach => '桃色';
+
+  @override
+  String get colorYellow => '黄色';
+
+  @override
+  String get colorGreen => '绿色';
+
+  @override
+  String get colorTeal => '蓝绿';
+
+  @override
+  String get colorSky => '天蓝';
+
+  @override
+  String get colorSapphire => '蓝宝石';
+
+  @override
+  String get colorBlue => '蓝色';
+
+  @override
+  String get colorLavender => '薰衣草';
 }

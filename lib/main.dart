@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'database_helper.dart';
 import 'models/hanzi_card.dart';
 import 'models/mcp_dict.dart';
 import 'settings_page.dart';
-import 'theme.dart'; // 引入拆分的主题文件
 import 'favorites_page.dart';
 import 'models/favorites_provider.dart';
 import 'models/language_provider.dart';
+import 'models/theme_provider.dart';
 import 'l10n/app_localizations.dart';
 
 void main() {
@@ -17,6 +16,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => FavoritesProvider()),
         ChangeNotifierProvider(create: (context) => LanguageProvider()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
       ],
       child: const AppInitializer(),
     ),
@@ -44,7 +44,9 @@ class _AppInitializerState extends State<AppInitializer> {
       context,
       listen: false,
     );
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     await favoritesProvider.initialize();
+    await themeProvider.initialize();
     setState(() {
       _isInitialized = true;
     });
@@ -69,33 +71,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode _themeMode = ThemeMode.system;
   int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _loadThemeMode();
-  }
-
-  Future<void> _loadThemeMode() async {
-    final prefs = await SharedPreferences.getInstance();
-    final themeIndex = prefs.getInt('themeMode') ?? 0;
-    setState(() {
-      _themeMode = ThemeMode.values[themeIndex];
-    });
-  }
-
-  Future<void> _saveThemeMode(ThemeMode themeMode) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('themeMode', themeMode.index);
-  }
-
-  void _updateThemeMode(ThemeMode themeMode) {
-    setState(() {
-      _themeMode = themeMode;
-    });
-    _saveThemeMode(themeMode);
   }
 
   void _onItemTapped(int index) {
@@ -106,20 +86,20 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> pages = [
-      const SearchPage(),
-      const FavoritesPage(),
-      SettingsPage(themeMode: _themeMode, onThemeModeChanged: _updateThemeMode),
-    ];
+    return Consumer2<LanguageProvider, ThemeProvider>(
+      builder: (context, languageProvider, themeProvider, child) {
+        final List<Widget> pages = [
+          const SearchPage(),
+          const FavoritesPage(),
+          const SettingsPage(),
+        ];
 
-    return Consumer<LanguageProvider>(
-      builder: (context, languageProvider, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Hanzi Dictionary',
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          themeMode: _themeMode,
+          theme: themeProvider.lightTheme,
+          darkTheme: themeProvider.darkTheme,
+          themeMode: themeProvider.themeMode,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           locale: languageProvider.currentLocale,

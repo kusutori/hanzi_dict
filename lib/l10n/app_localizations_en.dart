@@ -141,4 +141,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String favoritesCount(int count) {
     return '$count favorites';
   }
+
+  @override
+  String get colorTheme => 'Color Theme';
+
+  @override
+  String get colorRosewater => 'Rosewater';
+
+  @override
+  String get colorFlamingo => 'Flamingo';
+
+  @override
+  String get colorPink => 'Pink';
+
+  @override
+  String get colorMauve => 'Mauve';
+
+  @override
+  String get colorRed => 'Red';
+
+  @override
+  String get colorMaroon => 'Maroon';
+
+  @override
+  String get colorPeach => 'Peach';
+
+  @override
+  String get colorYellow => 'Yellow';
+
+  @override
+  String get colorGreen => 'Green';
+
+  @override
+  String get colorTeal => 'Teal';
+
+  @override
+  String get colorSky => 'Sky';
+
+  @override
+  String get colorSapphire => 'Sapphire';
+
+  @override
+  String get colorBlue => 'Blue';
+
+  @override
+  String get colorLavender => 'Lavender';
 }

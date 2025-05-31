@@ -361,6 +361,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} favorites'**
   String favoritesCount(int count);
+
+  /// Color theme settings section title
+  ///
+  /// In en, this message translates to:
+  /// **'Color Theme'**
+  String get colorTheme;
+
+  /// Rosewater color name
+  ///
+  /// In en, this message translates to:
+  /// **'Rosewater'**
+  String get colorRosewater;
+
+  /// Flamingo color name
+  ///
+  /// In en, this message translates to:
+  /// **'Flamingo'**
+  String get colorFlamingo;
+
+  /// Pink color name
+  ///
+  /// In en, this message translates to:
+  /// **'Pink'**
+  String get colorPink;
+
+  /// Mauve color name
+  ///
+  /// In en, this message translates to:
+  /// **'Mauve'**
+  String get colorMauve;
+
+  /// Red color name
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get colorRed;
+
+  /// Maroon color name
+  ///
+  /// In en, this message translates to:
+  /// **'Maroon'**
+  String get colorMaroon;
+
+  /// Peach color name
+  ///
+  /// In en, this message translates to:
+  /// **'Peach'**
+  String get colorPeach;
+
+  /// Yellow color name
+  ///
+  /// In en, this message translates to:
+  /// **'Yellow'**
+  String get colorYellow;
+
+  /// Green color name
+  ///
+  /// In en, this message translates to:
+  /// **'Green'**
+  String get colorGreen;
+
+  /// Teal color name
+  ///
+  /// In en, this message translates to:
+  /// **'Teal'**
+  String get colorTeal;
+
+  /// Sky color name
+  ///
+  /// In en, this message translates to:
+  /// **'Sky'**
+  String get colorSky;
+
+  /// Sapphire color name
+  ///
+  /// In en, this message translates to:
+  /// **'Sapphire'**
+  String get colorSapphire;
+
+  /// Blue color name
+  ///
+  /// In en, this message translates to:
+  /// **'Blue'**
+  String get colorBlue;
+
+  /// Lavender color name
+  ///
+  /// In en, this message translates to:
+  /// **'Lavender'**
+  String get colorLavender;
 }
 
 class _AppLocalizationsDelegate

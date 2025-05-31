@@ -180,5 +180,65 @@
                 "type": "int"
             }
         }
+    },
+    "colorTheme": "Color Theme",
+    "@colorTheme": {
+        "description": "Color theme settings section title"
+    },
+    "colorRosewater": "Rosewater",
+    "@colorRosewater": {
+        "description": "Rosewater color name"
+    },
+    "colorFlamingo": "Flamingo",
+    "@colorFlamingo": {
+        "description": "Flamingo color name"
+    },
+    "colorPink": "Pink",
+    "@colorPink": {
+        "description": "Pink color name"
+    },
+    "colorMauve": "Mauve",
+    "@colorMauve": {
+        "description": "Mauve color name"
+    },
+    "colorRed": "Red",
+    "@colorRed": {
+        "description": "Red color name"
+    },
+    "colorMaroon": "Maroon",
+    "@colorMaroon": {
+        "description": "Maroon color name"
+    },
+    "colorPeach": "Peach",
+    "@colorPeach": {
+        "description": "Peach color name"
+    },
+    "colorYellow": "Yellow",
+    "@colorYellow": {
+        "description": "Yellow color name"
+    },
+    "colorGreen": "Green",
+    "@colorGreen": {
+        "description": "Green color name"
+    },
+    "colorTeal": "Teal",
+    "@colorTeal": {
+        "description": "Teal color name"
+    },
+    "colorSky": "Sky",
+    "@colorSky": {
+        "description": "Sky color name"
+    },
+    "colorSapphire": "Sapphire",
+    "@colorSapphire": {
+        "description": "Sapphire color name"
+    },
+    "colorBlue": "Blue",
+    "@colorBlue": {
+        "description": "Blue color name"
+    },
+    "colorLavender": "Lavender",
+    "@colorLavender": {
+        "description": "Lavender color name"
     }
 }

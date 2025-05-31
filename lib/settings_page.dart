@@ -1,23 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'models/language_provider.dart';
 import 'models/favorites_provider.dart';
+import 'models/theme_provider.dart';
 import 'l10n/app_localizations.dart';
 
 class SettingsPage extends StatefulWidget {
-  final ThemeMode themeMode;
-  final ValueChanged<ThemeMode> onThemeModeChanged;
-
-  const SettingsPage({
-    super.key,
-    required this.themeMode,
-    required this.onThemeModeChanged,
-  });
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -194,11 +187,111 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  Widget _buildColorSelector(
+    ThemeProvider themeProvider,
+    AppLocalizations localizations,
+  ) {
+    return SizedBox(
+      height: 120,
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 7,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+          childAspectRatio: 1,
+        ),
+        itemCount: ThemeProvider.availableColors.length,
+        itemBuilder: (context, index) {
+          final color = ThemeProvider.availableColors[index];
+          final isSelected = themeProvider.selectedColorIndex == index;
+          final colorName = _getColorName(color.name, localizations);
+
+          return Tooltip(
+            message: colorName,
+            child: GestureDetector(
+              onTap: () => themeProvider.setSelectedColor(index),
+              child: Container(
+                decoration: BoxDecoration(
+                  color:
+                      Theme.of(context).brightness == Brightness.light
+                          ? color.light
+                          : color.dark,
+                  shape: BoxShape.circle,
+                  border:
+                      isSelected
+                          ? Border.all(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            width: 3,
+                          )
+                          : null,
+                ),
+                child:
+                    isSelected
+                        ? Icon(
+                          Icons.check,
+                          color: _getContrastColor(
+                            Theme.of(context).brightness == Brightness.light
+                                ? color.light
+                                : color.dark,
+                          ),
+                          size: 20,
+                        )
+                        : null,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  String _getColorName(String colorKey, AppLocalizations localizations) {
+    switch (colorKey) {
+      case 'rosewater':
+        return localizations.colorRosewater;
+      case 'flamingo':
+        return localizations.colorFlamingo;
+      case 'pink':
+        return localizations.colorPink;
+      case 'mauve':
+        return localizations.colorMauve;
+      case 'red':
+        return localizations.colorRed;
+      case 'maroon':
+        return localizations.colorMaroon;
+      case 'peach':
+        return localizations.colorPeach;
+      case 'yellow':
+        return localizations.colorYellow;
+      case 'green':
+        return localizations.colorGreen;
+      case 'teal':
+        return localizations.colorTeal;
+      case 'sky':
+        return localizations.colorSky;
+      case 'sapphire':
+        return localizations.colorSapphire;
+      case 'blue':
+        return localizations.colorBlue;
+      case 'lavender':
+        return localizations.colorLavender;
+      default:
+        return colorKey;
+    }
+  }
+
+  Color _getContrastColor(Color backgroundColor) {
+    // 计算颜色对比度，选择合适的前景色
+    final luminance = backgroundColor.computeLuminance();
+    return luminance > 0.5 ? Colors.black : Colors.white;
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final languageProvider = Provider.of<LanguageProvider>(context);
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
       appBar: AppBar(title: Text(localizations.settings)),
@@ -217,26 +310,35 @@ class _SettingsPageState extends State<SettingsPage> {
                 title: Text(localizations.systemDefault),
                 leading: Radio<ThemeMode>(
                   value: ThemeMode.system,
-                  groupValue: widget.themeMode,
-                  onChanged: (value) => widget.onThemeModeChanged(value!),
+                  groupValue: themeProvider.themeMode,
+                  onChanged: (value) => themeProvider.setThemeMode(value!),
                 ),
               ),
               ListTile(
                 title: Text(localizations.lightMode),
                 leading: Radio<ThemeMode>(
                   value: ThemeMode.light,
-                  groupValue: widget.themeMode,
-                  onChanged: (value) => widget.onThemeModeChanged(value!),
+                  groupValue: themeProvider.themeMode,
+                  onChanged: (value) => themeProvider.setThemeMode(value!),
                 ),
               ),
               ListTile(
                 title: Text(localizations.darkMode),
                 leading: Radio<ThemeMode>(
                   value: ThemeMode.dark,
-                  groupValue: widget.themeMode,
-                  onChanged: (value) => widget.onThemeModeChanged(value!),
+                  groupValue: themeProvider.themeMode,
+                  onChanged: (value) => themeProvider.setThemeMode(value!),
                 ),
               ),
+              const SizedBox(height: 32),
+
+              // 颜色主题设置部分
+              Text(
+                localizations.colorTheme,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              _buildColorSelector(themeProvider, localizations),
               const SizedBox(height: 32),
 
               // 语言设置部分

@@ -43,5 +43,20 @@
     "exportError": "导出失败",
     "importError": "导入失败",
     "selectFile": "选择文件",
-    "favoritesCount": "{count} 个收藏"
+    "favoritesCount": "{count} 个收藏",
+    "colorTheme": "颜色主题",
+    "colorRosewater": "玫瑰水",
+    "colorFlamingo": "火烈鸟",
+    "colorPink": "粉红",
+    "colorMauve": "紫红",
+    "colorRed": "红色",
+    "colorMaroon": "栗色",
+    "colorPeach": "桃色",
+    "colorYellow": "黄色",
+    "colorGreen": "绿色",
+    "colorTeal": "蓝绿",
+    "colorSky": "天蓝",
+    "colorSapphire": "蓝宝石",
+    "colorBlue": "蓝色",
+    "colorLavender": "薰衣草"
 }
