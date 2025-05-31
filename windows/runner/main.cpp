@@ -16,9 +16,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   // Initialize COM, so that it is available for use in the library and/or
   // plugins.
   ::CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
-
   // Configure bitsdojo_window for custom frame
-  bitsdojo_window_configure(BDW_CUSTOM_FRAME | BDW_HIDE_ON_STARTUP);
+  bitsdojo_window_configure(BDW_CUSTOM_FRAME);
 
   flutter::DartProject project(L"data");
 

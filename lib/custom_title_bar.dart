@@ -8,6 +8,56 @@ class CustomTitleBar extends StatelessWidget {
 
   const CustomTitleBar({super.key, required this.title});
 
+  void _showContextMenu(BuildContext context, Offset position) {
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        position.dx,
+        position.dy,
+        position.dx + 1,
+        position.dy + 1,
+      ),
+      items: <PopupMenuEntry>[
+        PopupMenuItem(
+          onTap: () => appWindow.minimize(),
+          child: Row(
+            children: [
+              const Icon(Icons.minimize, size: 16),
+              const SizedBox(width: 8),
+              const Text('最小化'),
+            ],
+          ),
+        ),
+        PopupMenuItem(
+          onTap: () => appWindow.maximizeOrRestore(),
+          child: Row(
+            children: [
+              Icon(
+                appWindow.isMaximized
+                    ? Icons.fullscreen_exit
+                    : Icons.fullscreen,
+                size: 16,
+              ),
+              const SizedBox(width: 8),
+              Text(appWindow.isMaximized ? '还原' : '最大化'),
+            ],
+          ),
+        ),
+        const PopupMenuDivider(),
+        PopupMenuItem(
+          onTap: () => appWindow.close(),
+          child: Row(
+            children: [
+              const Icon(Icons.close, size: 16),
+              const SizedBox(width: 8),
+              const Text('关闭'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
@@ -34,35 +84,40 @@ class CustomTitleBar extends StatelessWidget {
             children: [
               // App icon and title area (draggable)
               Expanded(
-                child: MoveWindow(
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 16),
-                      // App icon
-                      Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: foregroundColor.withOpacity(0.2),
+                child: GestureDetector(
+                  onSecondaryTapDown: (details) {
+                    _showContextMenu(context, details.globalPosition);
+                  },
+                  child: MoveWindow(
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 16),
+                        // App icon
+                        Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: foregroundColor.withOpacity(0.2),
+                          ),
+                          child: Icon(
+                            Icons.book,
+                            size: 16,
+                            color: foregroundColor,
+                          ),
                         ),
-                        child: Icon(
-                          Icons.book,
-                          size: 16,
-                          color: foregroundColor,
+                        const SizedBox(width: 12),
+                        // Title
+                        Text(
+                          title,
+                          style: TextStyle(
+                            color: foregroundColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      // Title
-                      Text(
-                        title,
-                        style: TextStyle(
-                          color: foregroundColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -92,24 +147,38 @@ class CustomTitleBar extends StatelessWidget {
                     },
                     tooltip: '选择主题',
                     foregroundColor: foregroundColor,
-                  ),
-
-                  // Window control buttons
-                  _WindowControlButton(
-                    icon: Icons.minimize,
-                    onPressed: () => appWindow.minimize(),
-                    foregroundColor: foregroundColor,
-                  ),
-                  _WindowControlButton(
-                    icon: Icons.crop_square,
-                    onPressed: () => appWindow.maximizeOrRestore(),
-                    foregroundColor: foregroundColor,
-                  ),
-                  _WindowControlButton(
-                    icon: Icons.close,
-                    onPressed: () => appWindow.close(),
-                    foregroundColor: foregroundColor,
-                    isClose: true,
+                  ), // Window control buttons - 使用原生按钮样式
+                  Row(
+                    children: [
+                      // 使用原生样式的窗口控制按钮
+                      MinimizeWindowButton(
+                        colors: WindowButtonColors(
+                          iconNormal: foregroundColor,
+                          mouseOver: foregroundColor.withOpacity(0.1),
+                          iconMouseOver: foregroundColor,
+                          mouseDown: foregroundColor.withOpacity(0.2),
+                          iconMouseDown: foregroundColor,
+                        ),
+                      ),
+                      MaximizeWindowButton(
+                        colors: WindowButtonColors(
+                          iconNormal: foregroundColor,
+                          mouseOver: foregroundColor.withOpacity(0.1),
+                          iconMouseOver: foregroundColor,
+                          mouseDown: foregroundColor.withOpacity(0.2),
+                          iconMouseDown: foregroundColor,
+                        ),
+                      ),
+                      CloseWindowButton(
+                        colors: WindowButtonColors(
+                          iconNormal: foregroundColor,
+                          mouseOver: Colors.red,
+                          iconMouseOver: Colors.white,
+                          mouseDown: Colors.red.shade700,
+                          iconMouseDown: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -160,58 +229,6 @@ class _TitleBarButtonState extends State<_TitleBarButton> {
                       : Colors.transparent,
             ),
             child: Icon(widget.icon, size: 16, color: widget.foregroundColor),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _WindowControlButton extends StatefulWidget {
-  final IconData icon;
-  final VoidCallback onPressed;
-  final Color foregroundColor;
-  final bool isClose;
-
-  const _WindowControlButton({
-    required this.icon,
-    required this.onPressed,
-    required this.foregroundColor,
-    this.isClose = false,
-  });
-
-  @override
-  State<_WindowControlButton> createState() => _WindowControlButtonState();
-}
-
-class _WindowControlButtonState extends State<_WindowControlButton> {
-  bool _isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: GestureDetector(
-        onTap: widget.onPressed,
-        child: Container(
-          width: 46,
-          height: 40,
-          decoration: BoxDecoration(
-            color:
-                _isHovered
-                    ? (widget.isClose
-                        ? Colors.red
-                        : widget.foregroundColor.withOpacity(0.1))
-                    : Colors.transparent,
-          ),
-          child: Icon(
-            widget.icon,
-            size: 16,
-            color:
-                _isHovered && widget.isClose
-                    ? Colors.white
-                    : widget.foregroundColor,
           ),
         ),
       ),
