@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'models/theme_provider.dart';
+import 'theme_selector_dialog.dart';
 
 class CustomTitleBar extends StatelessWidget {
   final String title;
@@ -134,20 +135,20 @@ class CustomTitleBar extends StatelessWidget {
                     },
                     tooltip: isDark ? '切换到浅色模式' : '切换到深色模式',
                     foregroundColor: foregroundColor,
-                  ),
-
-                  // Theme selector button (placeholder for future implementation)
+                  ),                  // Theme selector button (placeholder for future implementation)
                   _TitleBarButton(
                     icon: Icons.palette,
                     onPressed: () {
-                      // TODO: Implement theme selector dialog
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('主题选择功能即将推出')),
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const ThemeSelectorDialog();
+                        },
                       );
                     },
                     tooltip: '选择主题',
                     foregroundColor: foregroundColor,
-                  ), // Window control buttons - 使用原生按钮样式
+                  ),// Window control buttons - 使用原生按钮样式
                   Row(
                     children: [
                       // 使用原生样式的窗口控制按钮
