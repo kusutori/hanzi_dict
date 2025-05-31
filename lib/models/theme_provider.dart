@@ -1,78 +1,79 @@
+import 'package:catppuccin_flutter/catppuccin_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  // Catppuccin 14 种颜色选项
-  static const List<CatppuccinColor> availableColors = [
+  // Catppuccin 14 种颜色选项 - 使用库提供的预定义颜色
+  static final List<CatppuccinColor> availableColors = [
     CatppuccinColor(
       name: 'rosewater',
-      light: Color(0xFFDC8A78),
-      dark: Color(0xFFF5E0DC),
+      light: catppuccin.latte.rosewater,
+      dark: catppuccin.frappe.rosewater,
     ),
     CatppuccinColor(
       name: 'flamingo',
-      light: Color(0xFFDD7878),
-      dark: Color(0xFFF2CDCD),
+      light: catppuccin.latte.flamingo,
+      dark: catppuccin.frappe.flamingo,
     ),
     CatppuccinColor(
       name: 'pink',
-      light: Color(0xFFEA76CB),
-      dark: Color(0xFFF5C2E7),
+      light: catppuccin.latte.pink,
+      dark: catppuccin.frappe.pink,
     ),
     CatppuccinColor(
       name: 'mauve',
-      light: Color(0xFF8839EF),
-      dark: Color(0xFFCBA6F7),
+      light: catppuccin.latte.mauve,
+      dark: catppuccin.frappe.mauve,
     ),
     CatppuccinColor(
       name: 'red',
-      light: Color(0xFFD20F39),
-      dark: Color(0xFFF38BA8),
+      light: catppuccin.latte.red,
+      dark: catppuccin.frappe.red,
     ),
     CatppuccinColor(
       name: 'maroon',
-      light: Color(0xFFE64553),
-      dark: Color(0xFFEBA0AC),
+      light: catppuccin.latte.maroon,
+      dark: catppuccin.frappe.maroon,
     ),
     CatppuccinColor(
       name: 'peach',
-      light: Color(0xFFFE640B),
-      dark: Color(0xFFFAB387),
+      light: catppuccin.latte.peach,
+      dark: catppuccin.frappe.peach,
     ),
     CatppuccinColor(
       name: 'yellow',
-      light: Color(0xFFDF8E1D),
-      dark: Color(0xFFF9E2AF),
+      light: catppuccin.latte.yellow,
+      dark: catppuccin.frappe.yellow,
     ),
     CatppuccinColor(
       name: 'green',
-      light: Color(0xFF40A02B),
-      dark: Color(0xFFA6E3A1),
+      light: catppuccin.latte.green,
+      dark: catppuccin.frappe.green,
     ),
     CatppuccinColor(
       name: 'teal',
-      light: Color(0xFF179299),
-      dark: Color(0xFF94E2D5),
+      light: catppuccin.latte.teal,
+      dark: catppuccin.frappe.teal,
     ),
     CatppuccinColor(
       name: 'sky',
-      light: Color(0xFF04A5E5),
-      dark: Color(0xFF89DCEB),
+      light: catppuccin.latte.sky,
+      dark: catppuccin.frappe.sky,
     ),
     CatppuccinColor(
       name: 'sapphire',
-      light: Color(0xFF209FB5),
-      dark: Color(0xFF74C7EC),
+      light: catppuccin.latte.sapphire,
+      dark: catppuccin.frappe.sapphire,
     ),
     CatppuccinColor(
       name: 'blue',
-      light: Color(0xFF1E66F5),
-      dark: Color(0xFF89B4FA),
+      light: catppuccin.latte.blue,
+      dark: catppuccin.frappe.blue,
     ),
     CatppuccinColor(
       name: 'lavender',
-      light: Color(0xFF7287FD),
-      dark: Color(0xFFB4BEFE),
+      light: catppuccin.latte.lavender,
+      dark: catppuccin.frappe.lavender,
     ),
   ];
 
