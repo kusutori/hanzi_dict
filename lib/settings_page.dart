@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
@@ -83,27 +86,71 @@ class _SettingsPageState extends State<SettingsPage> {
     }
 
     final localizations = AppLocalizations.of(context)!;
-    final result = await FilePicker.platform.saveFile(
-      dialogTitle: localizations.exportFavorites,
-      fileName: 'hanzi_favorites_${DateTime.now().millisecondsSinceEpoch}.json',
-      type: FileType.custom,
-      allowedExtensions: ['json'],
+    final favoritesProvider = Provider.of<FavoritesProvider>(
+      context,
+      listen: false,
     );
 
-    if (result != null && mounted) {
-      final favoritesProvider = Provider.of<FavoritesProvider>(
-        context,
-        listen: false,
-      );
-      final success = await favoritesProvider.exportFavorites(result);
+    try {
+      // Get favorites data
+      final favorites = favoritesProvider.favorites;
+
+      // Create export data with metadata
+      final exportData = {
+        'version': '1.0',
+        'exportDate': DateTime.now().toIso8601String(),
+        'count': favorites.length,
+        'favorites': favorites.map((item) => item.toJson()).toList(),
+      };
+
+      // Convert to JSON string
+      final jsonString = const JsonEncoder.withIndent('  ').convert(exportData);
+      final bytes = utf8.encode(jsonString);
+
+      // Use platform-specific file saving approach
+      String? result;
+      if (defaultTargetPlatform == TargetPlatform.android ||
+          defaultTargetPlatform == TargetPlatform.iOS) {
+        // For mobile platforms, use saveFile with bytes
+        result = await FilePicker.platform.saveFile(
+          dialogTitle: localizations.exportFavorites,
+          fileName:
+              'hanzi_favorites_${DateTime.now().millisecondsSinceEpoch}.json',
+          type: FileType.custom,
+          allowedExtensions: ['json'],
+          bytes: Uint8List.fromList(bytes),
+        );
+      } else {
+        // For desktop platforms, use saveFile without bytes and write file manually
+        result = await FilePicker.platform.saveFile(
+          dialogTitle: localizations.exportFavorites,
+          fileName:
+              'hanzi_favorites_${DateTime.now().millisecondsSinceEpoch}.json',
+          type: FileType.custom,
+          allowedExtensions: ['json'],
+        );
+
+        if (result != null) {
+          final file = File(result);
+          await file.writeAsString(jsonString);
+        }
+      }
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              success ? localizations.exportSuccess : localizations.exportError,
+              result != null
+                  ? localizations.exportSuccess
+                  : localizations.exportError,
             ),
           ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${localizations.exportError}: $e')),
         );
       }
     }
