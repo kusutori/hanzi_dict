@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'database_helper.dart';
 import 'models/hanzi_card.dart';
 import 'models/mcp_dict.dart';
@@ -9,6 +10,7 @@ import 'models/favorites_provider.dart';
 import 'models/language_provider.dart';
 import 'models/theme_provider.dart';
 import 'l10n/app_localizations.dart';
+import 'custom_title_bar.dart';
 
 void main() {
   runApp(
@@ -21,6 +23,16 @@ void main() {
       child: const AppInitializer(),
     ),
   );
+
+  // Initialize bitsdojo_window for Windows
+  doWhenWindowReady(() {
+    const initialSize = Size(1280, 720);
+    appWindow.minSize = const Size(800, 600);
+    appWindow.size = initialSize;
+    appWindow.alignment = Alignment.center;
+    appWindow.title = 'Hanzi Dictionary';
+    appWindow.show();
+  });
 }
 
 class AppInitializer extends StatefulWidget {
@@ -103,65 +115,77 @@ class _MyAppState extends State<MyApp> {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           locale: languageProvider.currentLocale,
-          home: LayoutBuilder(
-            builder: (context, constraints) {
-              final isWideScreen = constraints.maxWidth >= 600;
-              final localizations = AppLocalizations.of(context)!;
+          home: Scaffold(
+            body: Column(
+              children: [
+                // Custom title bar
+                const CustomTitleBar(title: 'Hanzi Dictionary'),
 
-              return Scaffold(
-                body: Row(
-                  children: [
-                    if (isWideScreen)
-                      NavigationRail(
-                        selectedIndex: _selectedIndex,
-                        onDestinationSelected: _onItemTapped,
-                        labelType: NavigationRailLabelType.all, // 显示图标和文字
-                        destinations: [
-                          NavigationRailDestination(
-                            icon: const Icon(Icons.home),
-                            label: Text(localizations.home),
-                          ),
-                          NavigationRailDestination(
-                            icon: const Icon(Icons.favorite),
-                            label: Text(localizations.favorites),
-                          ),
-                          NavigationRailDestination(
-                            icon: const Icon(Icons.settings),
-                            label: Text(localizations.settings),
-                          ),
-                        ],
-                      ),
-                    Expanded(
-                      child: IndexedStack(
-                        index: _selectedIndex,
-                        children: pages,
-                      ),
-                    ),
-                  ],
-                ),
-                bottomNavigationBar:
-                    isWideScreen
-                        ? null
-                        : BottomNavigationBar(
-                          items: [
-                            BottomNavigationBarItem(
-                              icon: const Icon(Icons.home),
-                              label: localizations.home,
-                            ),
-                            BottomNavigationBarItem(
-                              icon: const Icon(Icons.favorite),
-                              label: localizations.favorites,
-                            ),
-                            BottomNavigationBarItem(
-                              icon: const Icon(Icons.settings),
-                              label: localizations.settings,
+                // Main content
+                Expanded(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final isWideScreen = constraints.maxWidth >= 600;
+                      final localizations = AppLocalizations.of(context)!;
+
+                      return Scaffold(
+                        body: Row(
+                          children: [
+                            if (isWideScreen)
+                              NavigationRail(
+                                selectedIndex: _selectedIndex,
+                                onDestinationSelected: _onItemTapped,
+                                labelType: NavigationRailLabelType.all,
+                                destinations: [
+                                  NavigationRailDestination(
+                                    icon: const Icon(Icons.home),
+                                    label: Text(localizations.home),
+                                  ),
+                                  NavigationRailDestination(
+                                    icon: const Icon(Icons.favorite),
+                                    label: Text(localizations.favorites),
+                                  ),
+                                  NavigationRailDestination(
+                                    icon: const Icon(Icons.settings),
+                                    label: Text(localizations.settings),
+                                  ),
+                                ],
+                              ),
+                            Expanded(
+                              child: IndexedStack(
+                                index: _selectedIndex,
+                                children: pages,
+                              ),
                             ),
                           ],
-                          currentIndex: _selectedIndex,
-                          onTap: _onItemTapped,
                         ),
-              );
-            },
+                        bottomNavigationBar:
+                            isWideScreen
+                                ? null
+                                : BottomNavigationBar(
+                                  items: [
+                                    BottomNavigationBarItem(
+                                      icon: const Icon(Icons.home),
+                                      label: localizations.home,
+                                    ),
+                                    BottomNavigationBarItem(
+                                      icon: const Icon(Icons.favorite),
+                                      label: localizations.favorites,
+                                    ),
+                                    BottomNavigationBarItem(
+                                      icon: const Icon(Icons.settings),
+                                      label: localizations.settings,
+                                    ),
+                                  ],
+                                  currentIndex: _selectedIndex,
+                                  onTap: _onItemTapped,
+                                ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
