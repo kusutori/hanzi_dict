@@ -85,9 +85,13 @@ class CustomTitleBar extends StatelessWidget {
             children: [
               // App icon and title area (draggable)
               Expanded(
-                child: GestureDetector(
-                  onSecondaryTapDown: (details) {
-                    _showContextMenu(context, details.globalPosition);
+                child: Listener(
+                  onPointerDown: (event) {
+                    // 检查是否是右键点击
+                    if (event.buttons == 2) {
+                      // 2 表示右键
+                      _showContextMenu(context, event.position);
+                    }
                   },
                   child: MoveWindow(
                     child: Row(
