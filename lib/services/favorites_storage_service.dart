@@ -7,15 +7,6 @@ import '../models/mcp_dict.dart';
 
 // Platform detection helper for web compatibility
 bool get _isWeb => kIsWeb;
-bool get _isMobile =>
-    !kIsWeb &&
-    (defaultTargetPlatform == TargetPlatform.android ||
-        defaultTargetPlatform == TargetPlatform.iOS);
-bool get _isDesktop =>
-    !kIsWeb &&
-    (defaultTargetPlatform == TargetPlatform.windows ||
-        defaultTargetPlatform == TargetPlatform.linux ||
-        defaultTargetPlatform == TargetPlatform.macOS);
 
 class FavoritesStorageService {
   static const String _storageLocationKey = 'favorites_storage_location';

@@ -55,7 +55,7 @@ class _SettingsPageState extends State<SettingsPage> {
     }
 
     final result = await FilePicker.platform.getDirectoryPath();
-    if (result != null) {
+    if (result != null && mounted) {
       final favoritesProvider = Provider.of<FavoritesProvider>(
         context,
         listen: false,
@@ -90,7 +90,7 @@ class _SettingsPageState extends State<SettingsPage> {
       allowedExtensions: ['json'],
     );
 
-    if (result != null) {
+    if (result != null && mounted) {
       final favoritesProvider = Provider.of<FavoritesProvider>(
         context,
         listen: false,
@@ -126,7 +126,7 @@ class _SettingsPageState extends State<SettingsPage> {
       allowedExtensions: ['json'],
     );
 
-    if (result != null && result.files.single.path != null) {
+    if (result != null && result.files.single.path != null && mounted) {
       final favoritesProvider = Provider.of<FavoritesProvider>(
         context,
         listen: false,
