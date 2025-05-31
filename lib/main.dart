@@ -25,18 +25,21 @@ void main() {
       child: const AppInitializer(),
     ),
   );
-  // Initialize bitsdojo_window for Windows
-  doWhenWindowReady(() {
-    const initialSize = Size(1280, 720);
-    appWindow.minSize = const Size(400, 300); // 降低最小尺寸限制
-    appWindow.size = initialSize;
-    appWindow.alignment = Alignment.center;
-    appWindow.title = 'Hanzi Dictionary';
-    // 添加短暂延迟确保Flutter完全准备好
-    Future.delayed(const Duration(milliseconds: 100), () {
-      appWindow.show();
+
+  // Initialize bitsdojo_window for Windows only
+  if (defaultTargetPlatform == TargetPlatform.windows) {
+    doWhenWindowReady(() {
+      const initialSize = Size(1280, 720);
+      appWindow.minSize = const Size(400, 300); // 降低最小尺寸限制
+      appWindow.size = initialSize;
+      appWindow.alignment = Alignment.center;
+      appWindow.title = 'Hanzi Dictionary';
+      // 添加短暂延迟确保Flutter完全准备好
+      Future.delayed(const Duration(milliseconds: 100), () {
+        appWindow.show();
+      });
     });
-  });
+  }
 }
 
 class AppInitializer extends StatefulWidget {
