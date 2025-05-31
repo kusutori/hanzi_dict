@@ -122,8 +122,9 @@ class _MyAppState extends State<MyApp> {
           home: Scaffold(
             body: Column(
               children: [
-                // Custom title bar
-                const CustomTitleBar(title: 'Hanzi Dictionary'),
+                // Custom title bar - 仅在Windows平台显示
+                if (defaultTargetPlatform == TargetPlatform.windows)
+                  const CustomTitleBar(title: 'Hanzi Dictionary'),
 
                 // Main content
                 Expanded(
