@@ -191,56 +191,77 @@ class _SettingsPageState extends State<SettingsPage> {
     ThemeProvider themeProvider,
     AppLocalizations localizations,
   ) {
-    return SizedBox(
-      height: 120,
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 7,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-          childAspectRatio: 1,
-        ),
-        itemCount: ThemeProvider.availableColors.length,
-        itemBuilder: (context, index) {
-          final color = ThemeProvider.availableColors[index];
-          final isSelected = themeProvider.selectedColorIndex == index;
-          final colorName = _getColorName(color.name, localizations);
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              localizations.colorTheme,
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+            const SizedBox(height: 12),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 7, // 每行7个颜色球
+                crossAxisSpacing: 12.0,
+                mainAxisSpacing: 12.0,
+                childAspectRatio: 1.0,
+              ),
+              itemCount: ThemeProvider.availableColors.length,
+              itemBuilder: (context, index) {
+                final color = ThemeProvider.availableColors[index];
+                final isSelected = themeProvider.selectedColorIndex == index;
+                final colorName = _getColorName(color.name, localizations);
 
-          return Tooltip(
-            message: colorName,
-            child: GestureDetector(
-              onTap: () => themeProvider.setSelectedColor(index),
-              child: Container(
-                decoration: BoxDecoration(
-                  color:
-                      Theme.of(context).brightness == Brightness.light
-                          ? color.light
-                          : color.dark,
-                  shape: BoxShape.circle,
-                  border:
-                      isSelected
-                          ? Border.all(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            width: 3,
-                          )
-                          : null,
-                ),
-                child:
-                    isSelected
-                        ? Icon(
-                          Icons.check,
-                          color: _getContrastColor(
+                return Tooltip(
+                  message: colorName,
+                  child: GestureDetector(
+                    onTap: () => themeProvider.setSelectedColor(index),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color:
                             Theme.of(context).brightness == Brightness.light
                                 ? color.light
                                 : color.dark,
-                          ),
-                          size: 20,
-                        )
-                        : null,
-              ),
+                        shape: BoxShape.circle,
+                        border:
+                            isSelected
+                                ? Border.all(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                  width: 3,
+                                )
+                                : Border.all(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.outline.withOpacity(0.2),
+                                  width: 1,
+                                ),
+                      ),
+                      child:
+                          isSelected
+                              ? Icon(
+                                Icons.check,
+                                color: _getContrastColor(
+                                  Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? color.light
+                                      : color.dark,
+                                ),
+                                size: 20,
+                              )
+                              : null,
+                    ),
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
@@ -333,11 +354,6 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 32),
 
               // 颜色主题设置部分
-              Text(
-                localizations.colorTheme,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 8),
               _buildColorSelector(themeProvider, localizations),
               const SizedBox(height: 32),
 
