@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/foundation.dart';
 import 'database_helper.dart';
-import 'models/hanzi_card.dart';
+import 'components/hanzi_card.dart';
 import 'models/mcp_dict.dart';
 import 'settings_page.dart';
 import 'favorites_page.dart';
@@ -12,7 +12,7 @@ import 'models/language_provider.dart';
 import 'models/theme_provider.dart';
 import 'l10n/app_localizations.dart';
 import 'custom_title_bar.dart';
-import 'theme_selector_dialog.dart';
+import 'components/theme_selector_dialog.dart';
 
 void main() {
   runApp(
