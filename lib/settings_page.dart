@@ -238,7 +238,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 : Border.all(
                                   color: Theme.of(
                                     context,
-                                  ).colorScheme.outline.withOpacity(0.2),
+                                  ).colorScheme.outline.withValues(alpha: 0.2),
                                   width: 1,
                                 ),
                       ),
@@ -313,7 +313,6 @@ class _SettingsPageState extends State<SettingsPage> {
     final languageProvider = Provider.of<LanguageProvider>(context);
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
-
     return Scaffold(
       appBar: AppBar(title: Text(localizations.settings)),
       body: Padding(

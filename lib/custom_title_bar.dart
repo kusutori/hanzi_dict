@@ -99,7 +99,7 @@ class CustomTitleBar extends StatelessWidget {
                           height: 20,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
-                            color: foregroundColor.withOpacity(0.2),
+                            color: foregroundColor.withValues(alpha: 0.2),
                           ),
                           child: Icon(
                             Icons.book,
@@ -135,7 +135,9 @@ class CustomTitleBar extends StatelessWidget {
                     },
                     tooltip: isDark ? '切换到浅色模式' : '切换到深色模式',
                     foregroundColor: foregroundColor,
-                  ),                  // Theme selector button (placeholder for future implementation)
+                  ),
+
+                  // Theme selector button
                   _TitleBarButton(
                     icon: Icons.palette,
                     onPressed: () {
@@ -148,25 +150,25 @@ class CustomTitleBar extends StatelessWidget {
                     },
                     tooltip: '选择主题',
                     foregroundColor: foregroundColor,
-                  ),// Window control buttons - 使用原生按钮样式
+                  ), // Window control buttons - 使用原生按钮样式
                   Row(
                     children: [
                       // 使用原生样式的窗口控制按钮
                       MinimizeWindowButton(
                         colors: WindowButtonColors(
                           iconNormal: foregroundColor,
-                          mouseOver: foregroundColor.withOpacity(0.1),
+                          mouseOver: foregroundColor.withValues(alpha: 0.1),
                           iconMouseOver: foregroundColor,
-                          mouseDown: foregroundColor.withOpacity(0.2),
+                          mouseDown: foregroundColor.withValues(alpha: 0.2),
                           iconMouseDown: foregroundColor,
                         ),
                       ),
                       MaximizeWindowButton(
                         colors: WindowButtonColors(
                           iconNormal: foregroundColor,
-                          mouseOver: foregroundColor.withOpacity(0.1),
+                          mouseOver: foregroundColor.withValues(alpha: 0.1),
                           iconMouseOver: foregroundColor,
-                          mouseDown: foregroundColor.withOpacity(0.2),
+                          mouseDown: foregroundColor.withValues(alpha: 0.2),
                           iconMouseDown: foregroundColor,
                         ),
                       ),
@@ -226,7 +228,7 @@ class _TitleBarButtonState extends State<_TitleBarButton> {
             decoration: BoxDecoration(
               color:
                   _isHovered
-                      ? widget.foregroundColor.withOpacity(0.1)
+                      ? widget.foregroundColor.withValues(alpha: 0.1)
                       : Colors.transparent,
             ),
             child: Icon(widget.icon, size: 16, color: widget.foregroundColor),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:flutter/foundation.dart';
 import 'database_helper.dart';
 import 'models/hanzi_card.dart';
 import 'models/mcp_dict.dart';
@@ -11,6 +12,7 @@ import 'models/language_provider.dart';
 import 'models/theme_provider.dart';
 import 'l10n/app_localizations.dart';
 import 'custom_title_bar.dart';
+import 'theme_selector_dialog.dart';
 
 void main() {
   runApp(
@@ -51,7 +53,9 @@ class _AppInitializerState extends State<AppInitializer> {
   void initState() {
     super.initState();
     _initializeApp();
-  }  Future<void> _initializeApp() async {
+  }
+
+  Future<void> _initializeApp() async {
     final favoritesProvider = Provider.of<FavoritesProvider>(
       context,
       listen: false,
@@ -231,9 +235,58 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isMobile =
+        defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS;
 
     return Scaffold(
-      appBar: AppBar(title: Text(localizations.appTitle)),
+      appBar: AppBar(
+        title: Text(localizations.appTitle),
+        actions:
+            isMobile
+                ? [
+                  // 暗模式切换按钮
+                  IconButton(
+                    icon: Icon(
+                      themeProvider.themeMode == ThemeMode.dark
+                          ? Icons.dark_mode
+                          : themeProvider.themeMode == ThemeMode.light
+                          ? Icons.light_mode
+                          : Icons.brightness_auto,
+                    ),
+                    onPressed: () {
+                      // 循环切换主题模式
+                      final currentMode = themeProvider.themeMode;
+                      if (currentMode == ThemeMode.light) {
+                        themeProvider.setThemeMode(ThemeMode.dark);
+                      } else if (currentMode == ThemeMode.dark) {
+                        themeProvider.setThemeMode(ThemeMode.system);
+                      } else {
+                        themeProvider.setThemeMode(ThemeMode.light);
+                      }
+                    },
+                    tooltip:
+                        themeProvider.themeMode == ThemeMode.dark
+                            ? '深色模式'
+                            : themeProvider.themeMode == ThemeMode.light
+                            ? '浅色模式'
+                            : '跟随系统',
+                  ),
+                  // 主题选择器按钮
+                  IconButton(
+                    icon: const Icon(Icons.palette),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => const ThemeSelectorDialog(),
+                      );
+                    },
+                    tooltip: '主题颜色',
+                  ),
+                ]
+                : null,
+      ),
       body: Column(
         children: [
           Padding(

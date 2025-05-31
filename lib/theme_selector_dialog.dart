@@ -139,12 +139,14 @@ class _ThemeModeOption extends StatelessWidget {
             color:
                 isSelected
                     ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                    : Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.5),
             width: isSelected ? 2 : 1,
           ),
           color:
               isSelected
-                  ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+                  ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
                   : Colors.transparent,
         ),
         child: Column(
@@ -212,7 +214,7 @@ class _ColorOption extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
