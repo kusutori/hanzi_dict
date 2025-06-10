@@ -91,6 +91,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
+  bool _isRailExtended = false; // 添加展开状态变量
 
   @override
   void initState() {
@@ -100,6 +101,12 @@ class _MyAppState extends State<MyApp> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+    });
+  }
+
+  void _toggleRailExtended() {
+    setState(() {
+      _isRailExtended = !_isRailExtended;
     });
   }
 
@@ -141,20 +148,39 @@ class _MyAppState extends State<MyApp> {
                           children: [
                             if (isWideScreen)
                               NavigationRail(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.onPrimary,
                                 selectedIndex: _selectedIndex,
                                 onDestinationSelected: _onItemTapped,
-                                labelType: NavigationRailLabelType.all,
+                                extended: _isRailExtended,
+                                groupAlignment: 0, //center the rail
+                                labelType:
+                                    _isRailExtended
+                                        ? NavigationRailLabelType.none
+                                        : NavigationRailLabelType.selected,
+                                leading: IconButton(
+                                  onPressed: _toggleRailExtended,
+                                  icon: Icon(
+                                    _isRailExtended
+                                        ? Icons.menu_open_rounded
+                                        : Icons.menu_rounded,
+                                  ),
+                                ),
+
                                 destinations: [
                                   NavigationRailDestination(
-                                    icon: const Icon(Icons.home),
+                                    selectedIcon: const Icon(Icons.home),
+                                    icon: const Icon(Icons.home_outlined),
                                     label: Text(localizations.home),
                                   ),
                                   NavigationRailDestination(
-                                    icon: const Icon(Icons.favorite),
+                                    selectedIcon: const Icon(Icons.favorite),
+                                    icon: const Icon(Icons.favorite_outline),
                                     label: Text(localizations.favorites),
                                   ),
                                   NavigationRailDestination(
-                                    icon: const Icon(Icons.settings),
+                                    selectedIcon: const Icon(Icons.settings),
+                                    icon: const Icon(Icons.settings_outlined),
                                     label: Text(localizations.settings),
                                   ),
                                 ],
@@ -170,23 +196,31 @@ class _MyAppState extends State<MyApp> {
                         bottomNavigationBar:
                             isWideScreen
                                 ? null
-                                : BottomNavigationBar(
-                                  items: [
-                                    BottomNavigationBarItem(
-                                      icon: const Icon(Icons.home),
+                                : NavigationBar(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  selectedIndex: _selectedIndex,
+                                  onDestinationSelected: _onItemTapped,
+                                  animationDuration: const Duration(
+                                    milliseconds: 1000,
+                                  ),
+                                  destinations: [
+                                    NavigationDestination(
+                                      selectedIcon: const Icon(Icons.home),
+                                      icon: const Icon(Icons.home_outlined),
                                       label: localizations.home,
                                     ),
-                                    BottomNavigationBarItem(
-                                      icon: const Icon(Icons.favorite),
+                                    NavigationDestination(
+                                      selectedIcon: const Icon(Icons.favorite),
+                                      icon: const Icon(Icons.favorite_border),
                                       label: localizations.favorites,
                                     ),
-                                    BottomNavigationBarItem(
-                                      icon: const Icon(Icons.settings),
+                                    NavigationDestination(
+                                      selectedIcon: const Icon(Icons.settings),
+                                      icon: const Icon(Icons.settings_outlined),
                                       label: localizations.settings,
                                     ),
                                   ],
-                                  currentIndex: _selectedIndex,
-                                  onTap: _onItemTapped,
                                 ),
                       );
                     },
