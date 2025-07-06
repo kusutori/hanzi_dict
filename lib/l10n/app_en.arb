@@ -68,6 +68,10 @@
     "@english": {
         "description": "English language option"
     },
+    "japanese": "日本語",
+    "@japanese": {
+        "description": "Japanese language option"
+    },
     "middleChinese": "Middle Chinese",
     "@middleChinese": {
         "description": "Middle Chinese language label"

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum LanguageOption { system, chinese, english }
+enum LanguageOption { system, chinese, english, japanese }
 
 class LanguageProvider extends ChangeNotifier {
   LanguageOption _currentLanguage = LanguageOption.system;
@@ -40,6 +40,9 @@ class LanguageProvider extends ChangeNotifier {
       case LanguageOption.english:
         _currentLocale = const Locale('en');
         break;
+      case LanguageOption.japanese:
+        _currentLocale = const Locale('ja');
+        break;
       case LanguageOption.system:
         _currentLocale = null; // Let system decide
         break;
@@ -54,6 +57,8 @@ class LanguageProvider extends ChangeNotifier {
         return '中文';
       case LanguageOption.english:
         return 'English';
+      case LanguageOption.japanese:
+        return '日本語';
     }
   }
 }

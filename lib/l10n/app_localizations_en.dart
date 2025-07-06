@@ -60,6 +60,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get english => 'English';
 
   @override
+  String get japanese => '日本語';
+
+  @override
   String get middleChinese => 'Middle Chinese';
 
   @override

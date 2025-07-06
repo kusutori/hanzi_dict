@@ -385,6 +385,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   onChanged: (value) => languageProvider.setLanguage(value!),
                 ),
               ),
+              ListTile(
+                title: Text(localizations.japanese),
+                leading: Radio<LanguageOption>(
+                  value: LanguageOption.japanese,
+                  groupValue: languageProvider.currentLanguage,
+                  onChanged: (value) => languageProvider.setLanguage(value!),
+                ),
+              ),
               const SizedBox(height: 32),
 
               // 存储设置部分
