@@ -158,9 +158,9 @@ class _MyAppState extends State<MyApp> {
                                     _isRailExtended
                                         ? NavigationRailLabelType.none
                                         : NavigationRailLabelType.selected,
-                                leading: IconButton(
+                                leading: FloatingActionButton(
                                   onPressed: _toggleRailExtended,
-                                  icon: Icon(
+                                  child: Icon(
                                     _isRailExtended
                                         ? Icons.menu_open_rounded
                                         : Icons.menu_rounded,
