@@ -5,13 +5,13 @@ import 'package:flutter/foundation.dart';
 import 'database_helper.dart';
 import 'components/hanzi_card.dart';
 import 'models/mcp_dict.dart';
-import 'settings_page.dart';
-import 'favorites_page.dart';
+import 'pages/settings_page.dart';
+import 'pages/favorites_page.dart';
 import 'models/favorites_provider.dart';
 import 'models/language_provider.dart';
 import 'models/theme_provider.dart';
 import 'l10n/app_localizations.dart';
-import 'custom_title_bar.dart';
+import 'components/custom_title_bar.dart';
 import 'components/theme_selector_dialog.dart';
 
 void main() {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:provider/provider.dart';
-import '../card_details_page.dart';
+import '../pages/card_details_page.dart';
 import '../models/mcp_dict.dart';
 import '../models/favorites_provider.dart';
 

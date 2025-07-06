@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
-import 'models/language_provider.dart';
-import 'models/favorites_provider.dart';
-import 'models/theme_provider.dart';
-import 'l10n/app_localizations.dart';
+import '../models/language_provider.dart';
+import '../models/favorites_provider.dart';
+import '../models/theme_provider.dart';
+import '../l10n/app_localizations.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
-import 'components/hanzi_card.dart';
+import '../components/hanzi_card.dart';
 // import 'models/mcp_dict.dart';
-import 'models/favorites_provider.dart';
-import 'models/theme_provider.dart';
-import 'l10n/app_localizations.dart';
-import 'components/theme_selector_dialog.dart';
+import '../models/favorites_provider.dart';
+import '../models/theme_provider.dart';
+import '../l10n/app_localizations.dart';
+import '../components/theme_selector_dialog.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({super.key});

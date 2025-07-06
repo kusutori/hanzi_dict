@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:provider/provider.dart';
-import 'models/mcp_dict.dart';
-import 'models/favorites_provider.dart';
-import 'l10n/app_localizations.dart';
+import '../models/mcp_dict.dart';
+import '../models/favorites_provider.dart';
+import '../l10n/app_localizations.dart';
 
 class CardDetailsPage extends StatelessWidget {
   final McpDict item;
